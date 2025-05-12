@@ -4,28 +4,22 @@ namespace Aplicacion;
 
 public class Persona
 {   // ID AUTOINCREMENTAL, REPOSITORIO ASIGNA
-    private int _id;
-    private string _DNI;
-    private string _nombre;
-    private string _apellido;
-    private string _email;
-    private string _telefono;
+    private int _id; // en el repositorio, va public o private?
+    public string DNI{get;set;}
+    public string Nombre {get;set;}
+    public string Apellido{get;set;}
+    public string Email{get;set;}
+    public string Telefono{get;set;}
     public Persona(string dni, string nom, string ape, string em, string tel)
     {
         ValidadorPersona.Validar(dni, nom, ape, em);
 
-        _DNI = dni;
-        _nombre = nom;
-        _apellido = ape;
-        _email = em;
-        _telefono = tel;
+        DNI = dni;
+        Nombre = nom;
+        Apellido = ape;
+        Email = em;
+        Telefono = tel;
     }
-    public string GetDNI() => _DNI;
-    public string GetNombre() => _nombre;
-    public string GetApellido() => _apellido;
-    public string GetEmail() => _email;
-    public string GetTelefono() => _telefono;
-
     public void AsignarId(int id)
     {
         _id = id;
@@ -33,6 +27,6 @@ public class Persona
 
     public String toString(){
         
-        return $"DNI: {_DNI}, nombre: {_nombre}  {_apellido}, email: {_email}, teléfono: {_telefono}"; 
+        return $"DNI: {DNI}, nombre: {Nombre}  {Apellido}, email: {Email}, teléfono: {Telefono}"; 
     }
 }
