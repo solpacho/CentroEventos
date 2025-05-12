@@ -4,8 +4,8 @@ namespace CentroDeportivo;
 // using CentroDeportivo.Aplicacion;
 public class RepositorioEventosTXT: IRepositorioEvento
 {
-    readonly string _nombreArchivo = "Eventos.txt";
-     public void AgregarEvento(EventoDeportivo evento)
+    readonly string _nombreArchivo = "Eventos.txt";  
+     public void AgregarEvento(EventoDeportivo evento) //escribe el evento agregado en el texto
     {
         using var sw = new StreamWriter(_nombreArchivo, true); //if true -> reset() if false -> rewrite() 
         sw.WriteLine(evento.Id);
@@ -16,8 +16,9 @@ public class RepositorioEventosTXT: IRepositorioEvento
         sw.WriteLine(evento.CupoMaximo);
         sw.WriteLine(evento.ResposableId);
     }
-    public List<EventoDeportivo> ListarEventos() {
-        var resultado = new List<EventoDeportivo>();
+    
+    public List<EventoDeportivo> ListarEventos() { //agrega todos los elementos en el texto a una lista, asi poder trabajar con todos
+        var resultado = new List<EventoDeportivo>();                                             //los eventos.
         using var sr = new StreamReader(_nombreArchivo);
         while (!sr.EndOfStream) {
             var evento = new EventoDeportivo();
