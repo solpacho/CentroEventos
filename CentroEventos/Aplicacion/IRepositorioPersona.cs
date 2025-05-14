@@ -4,7 +4,7 @@ namespace CentroEventos.Aplicacion;
 
 public interface IRepositorioPersona
 {
-    void Agregar(Persona persona);
+    void AgregarPersona(Persona persona);
     Persona? ObtenerPorId(int id);
     List<Persona> ListarPersonas();
     void Modificar(Persona persona);
