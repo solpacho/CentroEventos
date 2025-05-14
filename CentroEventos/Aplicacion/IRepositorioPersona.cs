@@ -9,4 +9,8 @@ public interface IRepositorioPersona
     List<Persona> ListarPersonas();
     void Modificar(Persona persona);
     void Eliminar(int id);
+    
+    bool DniRepetido(string dni); // falta implementar
+
+    bool EmailRepetido(string mail); // // falta implementar
 }

@@ -1,7 +1,5 @@
 using System;
-
-namespace CentroDeportivo;
-
+namespace CentroEventos.Aplicacion;
 public interface IRepositorioEvento
 {
     void AgregarEvento(EventoDeportivo evento);

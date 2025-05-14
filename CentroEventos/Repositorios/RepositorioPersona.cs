@@ -76,5 +76,15 @@ public class RepositorioPersona: IRepositorioPersona
         //expresion lambda, si la lista tiene elementos, busca la persona con mayor id y le sumo 1, 
         //si es el primer elemento le asigno 1
     }
+
+    public bool DniRepetido(string dni){
+        var lista = ListarPersonas();
+        return (lista.Any(p => p.DNI == dni)); 
+    }
+
+    public bool EmailRepetido(string email){
+        var lista = ListarPersonas();
+        return (lista.Any(p => p.Email == email));
+    }
     
 }

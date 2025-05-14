@@ -1,6 +1,6 @@
 using System;
 
-namespace CentroDeportivo;
+namespace CentroEventos.Aplicacion;
 // using CentroDeportivo.Aplicacion;
 public class RepositorioEventosTXT: IRepositorioEvento
 {
@@ -14,7 +14,7 @@ public class RepositorioEventosTXT: IRepositorioEvento
         sw.WriteLine(evento.FechaHoraInicio.ToString("o")); // formato ISO 8601
         sw.WriteLine(evento.DuracionHoras);
         sw.WriteLine(evento.CupoMaximo);
-        sw.WriteLine(evento.ResposableId);
+        sw.WriteLine(evento.ResponsableId);
     }
     public List<EventoDeportivo> ListarEventos() {
         var resultado = new List<EventoDeportivo>();
@@ -27,7 +27,7 @@ public class RepositorioEventosTXT: IRepositorioEvento
             evento.FechaHoraInicio = DateTime.Parse(sr.ReadLine() ?? "");
             evento.DuracionHoras = Double.Parse(sr.ReadLine() ?? ""); 
             evento.CupoMaximo = int.Parse(sr.ReadLine() ?? "");          
-            evento.ResposableId = int.Parse(sr.ReadLine() ?? "");
+            evento.ResponsableId = int.Parse(sr.ReadLine() ?? "");
             resultado.Add(evento);
         }
         return resultado;
@@ -45,7 +45,7 @@ public class RepositorioEventosTXT: IRepositorioEvento
             sw.WriteLine(evento.FechaHoraInicio.ToString("o")); // formato ISO 8601
             sw.WriteLine(evento.DuracionHoras);
             sw.WriteLine(evento.CupoMaximo);
-            sw.WriteLine(evento.ResposableId);
+            sw.WriteLine(evento.ResponsableId);
         }
     }
 

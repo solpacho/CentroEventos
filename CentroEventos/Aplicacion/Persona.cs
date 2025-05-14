@@ -11,9 +11,7 @@ public class Persona
     public string Email{get;set;}
     public string Telefono{get;set;}
     public Persona(string dni, string nom, string ape, string em, string tel)
-    {
-        ValidadorPersona.Validar(dni, nom, ape, em);
-
+    { // falta validador persona, usarlo en el caso de uso agregar
         DNI = dni;
         Nombre = nom;
         Apellido = ape;
