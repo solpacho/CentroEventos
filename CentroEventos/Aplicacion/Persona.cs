@@ -1,6 +1,6 @@
 ﻿using System.Data.Common;
 
-namespace Aplicacion;
+namespace CentroEventos.Aplicacion;
 
 public class Persona
 {   // ID AUTOINCREMENTAL, REPOSITORIO ASIGNA
@@ -20,11 +20,7 @@ public class Persona
         Email = em;
         Telefono = tel;
     }
-    public void AsignarId(int id)
-    {
-        _id = id;
-    }
-
+    public Persona() {}
     public String toString(){
         
         return $"DNI: {DNI}, nombre: {Nombre}  {Apellido}, email: {Email}, teléfono: {Telefono}"; 
