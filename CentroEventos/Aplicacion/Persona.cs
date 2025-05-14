@@ -4,7 +4,7 @@ namespace Aplicacion;
 
 public class Persona
 {   // ID AUTOINCREMENTAL, REPOSITORIO ASIGNA
-    private int _id; // en el repositorio, va public o private?
+    public int _id; // en el repositorio, va public o private?
     public string DNI{get;set;}
     public string Nombre {get;set;}
     public string Apellido{get;set;}

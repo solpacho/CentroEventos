@@ -1,16 +1,17 @@
 using System.Data.Common;
+using Aplicacion;
 using CentroEventos.Aplicacion;
 
 namespace CentroEventos.Repositorios;
 
-public class RepositorioPersona
+public class RepositorioPersona: IRepositorioPersona
 {
 
     readonly string _nombreArchivo = " personas.txt ";
-    public void AgregarPersona (){
-        persona.Id = ObtenerNuevoId();
+    public void AgregarPersona (Persona persona){
+        persona._id = ObtenerNuevoId();
         using var sw = new StreamWriter (_nombreArchivo, true);
-        sw.WriteLine (persona.Id);
+        sw.WriteLine (persona._id);
         sw.WriteLine (persona.DNI);
         sw.WriteLine (persona.Nombre);
         sw.WriteLine (persona.Apellido);
