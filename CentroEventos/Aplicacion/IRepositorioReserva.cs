@@ -1,6 +1,4 @@
 using System;
-using CentroEventos.Aplicacion;
-
 namespace CentroEventos.Aplicacion;
 
 public interface IRepositorioReserva
