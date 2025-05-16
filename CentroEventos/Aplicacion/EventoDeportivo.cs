@@ -14,8 +14,7 @@ public class EventoDeportivo
 
     public EventoDeportivo(){}
 
-    public EventoDeportivo(int id, string nom, int cupo, int resp,double dur, DateTime fecha,string desc) {
-        Id = id;
+    public EventoDeportivo(string nom, int cupo, int resp,double dur, DateTime fecha,string desc) {
         Nombre = nom;
         CupoMaximo = cupo;
         ResponsableId = resp;

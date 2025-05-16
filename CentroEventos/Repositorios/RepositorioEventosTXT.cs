@@ -1,12 +1,13 @@
 using System;
+using CentroDeportivo.Aplicacion;
 
-namespace CentroEventos.Aplicacion;
-// using CentroDeportivo.Aplicacion;
-public class RepositorioEventosTXT: IRepositorioEvento
+namespace CentroEventos.Repositorios;
+
+public class RepositorioEventosTXT: IRepositorioEvento(RepositorioReserva reporeserva)
 {
     readonly string _nombreArchivo = "Eventos.txt";
-     public void AgregarEvento(EventoDeportivo evento)
-    {
+
+    public void AgregarEvento(EventoDeportivo evento) {
         using var sw = new StreamWriter(_nombreArchivo, true); //if true -> reset() if false -> rewrite() 
         sw.WriteLine(evento.Id);
         sw.WriteLine(evento.Nombre);
@@ -16,6 +17,7 @@ public class RepositorioEventosTXT: IRepositorioEvento
         sw.WriteLine(evento.CupoMaximo);
         sw.WriteLine(evento.ResponsableId);
     }
+
     public List<EventoDeportivo> ListarEventos() {
         var resultado = new List<EventoDeportivo>();
         using var sr = new StreamReader(_nombreArchivo);
@@ -47,6 +49,22 @@ public class RepositorioEventosTXT: IRepositorioEvento
             sw.WriteLine(evento.CupoMaximo);
             sw.WriteLine(evento.ResponsableId);
         }
+    }
+
+    public int ObtenerNuevoId (){ 
+        var lista = ListarEventos();
+        return lista.Any() ? lista.Max(p => p._id) + 1 : 1;    
+    }
+
+    public bool existeEvento(int id)
+    {
+        var lista = ListarEventos();
+        return lista.Any(e => e.Id == id);
+    }
+
+     public EventoDeportivo? ObtenerPorId(int id)
+    {
+        return ListarEventos().FirstOrDefault(e => e.Id == id);
     }
 
 

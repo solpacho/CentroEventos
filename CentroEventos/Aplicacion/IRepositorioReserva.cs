@@ -3,9 +3,13 @@ namespace CentroEventos.Aplicacion;
 
 public interface IRepositorioReserva
 {
+    //id
+    int ObtenerNuevoId();
+    //
+
     void AgregarReserva(Reserva reserva);
-    Reserva? ObtenerPorId(int id);
     List<Reserva> ListarReservas();
+    Reserva? ObtenerPorId(int id);
     void Modificar(Reserva reserva);
     void Eliminar(int id);
 

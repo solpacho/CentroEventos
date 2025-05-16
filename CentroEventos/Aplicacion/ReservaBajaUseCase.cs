@@ -2,15 +2,17 @@ namespace Aplicacion;
 
 public class ReservaBajaUseCase(IRepositorioReserva repositorio, ValidadorReserva validador, IServicioAutorizacion autorizacion)
 {
-    public void Ejecutar(Reserva reserva, int idUsuario)
+    public void Ejecutar(int idPersona, int idUsuario)
     {
-        if (!validador.Validar(resrva))
-            throw new Exception(ValidacionException);
-        if (repositorio.ObtenerPorId(reserva.id == null)) //no entiendo q dice la warning
-            throw new Exception(EntidadNotFoundException);
-        if (!autorizacion.PoseeElPermiso(idUsuario, Permiso.ReservaBaja))
-            throw new Exception(FalloAutorizacionException);
-        repositorio.Eliminar(reserva.id);
+        if (!autorizacion.PoseeElPermiso(IdUsuario, Permiso.UsuarioBaja)) {
+            throw new FalloAutorizacionException("No posee permisos para realizar esta acción. \n");
+        }
+
+        if (!repositorio.existePersona(idReserva)) {
+            throw new EntidadNotFound("No se ha encontrado la reserva. \n")
+        }
+        //reglas!!
+        repositorio.EliminarPersona(idReserva);
     }
 
 }

@@ -5,13 +5,17 @@ namespace CentroEventos.Aplicacion;
 public class EventoDeportivoAltaUseCase(IRepositorioEvento repositorio, ValidadorEventos validador, IServicioAutorizacion autorizacion)
 {
     public void Ejecutar(EventoDeportivo evento, int idUsuario) {
+       
         if (!validador.Validar(evento, out string mensajeError)) {
-            throw new Exception(mensajeError);
+            throw new ValidacionException(mensajeError);
         }
-        if (repositorio.ObtenerPorId(evento.id) != null)
-            throw new Exception(DuplicadoException);
-        if (!autorizacion.PoseeElPermiso(idUsuario, Permiso.AgregarEvento))
-            throw new Exception(FalloAutorizacionException);
+
+        if (!autorizacion.PoseeElPermiso(idUsuario, Permiso.AgregarEvento)) {
+            throw new FalloAutorizacionException("No posee permisos para esta acción.");
+        }
+        
+        evento.Id=repositorio.ObtenerNuevoId();
+
         repositorio.AgregarEvento(evento);
     }
 }

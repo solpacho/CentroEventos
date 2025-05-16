@@ -2,16 +2,18 @@ using System;
 
 namespace Aplicacion;
 
-public class EventoDeportivoBajaUseCase(IRepositorioEvento repositorio, ValidadorEventos validador, IServicioAutorizacion autorizacion)
+public class EventoDeportivoBajaUseCase(IRepositorioEvento repositorio, IServicioAutorizacion autorizacion)
 {
-    public void Ejecutar(EventoDeportivo evento, int IdUsuario)
+    public void Ejecutar(int idEvento, int IdUsuario)
     {
-        if (!validador.Validar(evento)) //preguntar por la excepcion
-            throw new Exception(ValidacionException);
-        //if (repositorio.ObtenerPorId(evento.Id) == null)
-        //   throw new Exception(EntidadNotFoundException);
-        if (!autorizacion.PoseeElPermiso(IdUsuario, Permiso.EventoBaja))
-            throw new Exception(FalloAutorizacionException);
-        repositorio.EliminarEvento(evento.Id);
+        if (!autorizacion.PoseeElPermiso(IdUsuario, Permiso.EventoBaja)) {
+            throw new FalloAutorizacionException("No posee permisos para realizar esta acción. \n");
+        }
+
+        if (!repositorio.existeEvento(idEvento)) {
+            throw new EntidadNotFound("No se ha encontrado el evento. \n")
+        }
+        //reglas!!
+        repositorio.EliminarEvento(idEvento);
     }
 }

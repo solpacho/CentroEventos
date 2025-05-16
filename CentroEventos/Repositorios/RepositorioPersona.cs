@@ -8,6 +8,7 @@ public class RepositorioPersona: IRepositorioPersona
 {
 
     readonly string _nombreArchivo = " personas.txt ";
+    
     public void AgregarPersona (Persona persona){
         persona._id = ObtenerNuevoId();
         using var sw = new StreamWriter (_nombreArchivo, true);
@@ -69,8 +70,8 @@ public class RepositorioPersona: IRepositorioPersona
             sw.WriteLine(p.Telefono);
         }
     }
-
-    private int ObtenerNuevoId (){ //devuelvo el numero id que se le asigna a la proxima persona
+    
+    public int ObtenerNuevoId (){ //devuelvo el numero id que se le asigna a la proxima persona
         var lista = ListarPersonas();
         return lista.Any() ? lista.Max(p => p._id) + 1 : 1;
         //expresion lambda, si la lista tiene elementos, busca la persona con mayor id y le sumo 1, 
@@ -87,4 +88,13 @@ public class RepositorioPersona: IRepositorioPersona
         return (lista.Any(p => p.Email == email));
     }
     
+    public bool existePersona(int id) {
+        var lista = ListarPersonas();
+        return (lista.Any(p => p.Id == id));
+    }
+
+     public Persona? ObtenerPorId(int id)
+    {
+        return ListarPersonas().FirstOrDefault(r => r.Id == id);
+    }
 }

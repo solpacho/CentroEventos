@@ -2,7 +2,7 @@ using System;
 
 namespace CentroEventos.Aplicacion;
 
-public class ValidadorEventos
+public class ValidadorEventos(IRepositorioPersona repoper)
 {
     public bool Validar(EventoDeportivo evento, out string mensajeError) {
         mensajeError="";
@@ -20,6 +20,9 @@ public class ValidadorEventos
         }
         if (DateTime.Compare(evento.FechaHoraInicio,DateTime.Now)<0) {
             mensajeError = "La fecha debe ser posterior o igual a la fecha actual. \n";
+        }
+        if (!repoper.existePersona(evento.ResponsableId)) {
+            mensajeError = "ID de Responsable inválido \n";
         }
         return (mensajeError=="");
     }

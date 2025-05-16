@@ -1,12 +1,12 @@
-namespace Aplicacion;
+namespace CentroEventos.Aplicacion;
 
 public class Reserva
 {
-    public int id {get;set;} // Autoincremental en repositorio Reserva
-    public int PersonaId {get;set;} // id de la persona
+    public int Id {get;set;} 
+    public int PersonaId {get;set;} 
     public int EventoDeportivoId {get;set;}
 
-    public DateTime FechaAltaReserva;
+    public DateTime FechaAltaReserva {get;set;};
 
     public enum EstadoAsistencia{
         Pendiente,
@@ -14,8 +14,12 @@ public class Reserva
         Ausente
     }
 
-    public Reserva(){
-
+    public Reserva(int id, int personaid, int eventodeportivoid){
+        Id=id;
+        PersonaId=personaid;
+        EventoDeportivoId=eventodeportivoid;
+        FechaAltaReserva= DateTime.Now();
+        // enum ?? como se usaria?
 
     }
 

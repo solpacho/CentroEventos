@@ -73,12 +73,19 @@ public class RepositorioReserva : IRepositorioReserva
         }
     }
 
-    private int ObtenerNuevoId()
+    public int ObtenerNuevoId()
     {
         var lista = ListarReservas();
         return lista.Any() ? lista.Max(r => r.Id) + 1 : 1;
     }
 
+  /*  public bool existeReserva(int id)
+    {
+        var lista = ListarReservas();
+        return lista.Any(r => r.Id == id);
+    } puede servir?
+  */ 
+  
     public bool ReservaExistente(int personaId, int eventoId)
     {
         var lista = ListarReservas();
@@ -89,5 +96,10 @@ public class RepositorioReserva : IRepositorioReserva
     {
         var lista = ListarReservas();
         return lista.Count(r => r.EventoDeportivoId == eventoId);
+    }
+    
+     public Reserva? ObtenerPorId(int id)
+    {
+        return ListarReservas().FirstOrDefault(r => r.Id == id);
     }
 }
