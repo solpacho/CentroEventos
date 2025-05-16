@@ -73,6 +73,11 @@ public class RepositorioEventosTXT : IRepositorioEvento(RepositorioReserva repor
 
     }
 
+    public bool controlReserva(EventoDeportivo evento)
+    {
+        var reservas = _repo.CantidadReservasEvento(evento.Id);
+        return reservas < evento.CupoMaximo;
+    }
 
 
 }
