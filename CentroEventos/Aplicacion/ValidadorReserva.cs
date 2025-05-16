@@ -15,7 +15,7 @@ public static class ValidadorReserva(IRepositorioPersona repoper, IRepositorioEv
         if (repores.ReservaExistente(persona.Id,evento.Id)) {
             mensajeError="Esta persona ya ha reservado para este evento. \n"
         }
-        if (repores.CantidadReservasEvento(evento.Id) < evento.CupoMaximo) {
+        if (repores.CantidadReservasEvento(evento.Id) = evento.CupoMaximo) {
             mensajeError="No hay cupo disponible para este evento. \n"
         }
         return (mensajeError=="");    

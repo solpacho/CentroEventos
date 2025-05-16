@@ -1,5 +1,6 @@
 using System;
 namespace CentroEventos.Aplicacion;
+
 public interface IRepositorioEvento
 {
     //id
@@ -9,5 +10,8 @@ public interface IRepositorioEvento
     void AgregarEvento(EventoDeportivo evento);
     List<EventoDeportivo> ListarEventos();
     void EliminarEvento(int id);
+
+    bool esResponsable(int id);
+
     
 }

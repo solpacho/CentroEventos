@@ -2,18 +2,29 @@ using CentroEventos.Aplicacion;
 
 namespace Aplicacion;
 
-public class PersonaBajaUseCase(IRepositorioPersona repositorio, IServicioAutorizacion autorizacion)
+public class PersonaBajaUseCase(IRepositorioPersona repositorioP, IServicioAutorizacion autorizacion, IRepositorioEventoDeportivo repositorioEV, IRepositorioReserva repositorioR)
 {
     public void Ejecutar(int idPersona, int idUsuario)
     {
-        if (!autorizacion.PoseeElPermiso(IdUsuario, Permiso.UsuarioBaja)) {
+        if (!autorizacion.PoseeElPermiso(idUsuario, Permiso.UsuarioBaja)) {
             throw new FalloAutorizacionException("No posee permisos para realizar esta acción. \n");
         }
 
-        if (!repositorio.existePersona(idPersona)) {
-            throw new EntidadNotFound("No se ha encontrado la persona. \n")
+        if (!repositorioP.existePersona(idPersona)) {
+            throw new EntidadNotFoundException("No se ha encontrado la persona. \n");
         }
-        //reglas!!
-        repositorio.EliminarPersona(idPersona);
+        // reglas
+        
+        if (repositorioEV.esResponsable(idPersona))
+        {
+            throw new OperacionInvalidaException("No puede eliminarse esta persona.");
+        }
+
+        if (repositorioR.tieneReserva(idPersona))
+        { 
+            throw new OperacionInvalidaException("No puede eliminarse esta persona.");
+        }
+
+        repositorioP.Eliminar(idPersona);
     }
 }

@@ -3,7 +3,7 @@ using CentroDeportivo.Aplicacion;
 
 namespace CentroEventos.Repositorios;
 
-public class RepositorioEventosTXT: IRepositorioEvento(RepositorioReserva reporeserva)
+public class RepositorioEventosTXT : IRepositorioEvento(RepositorioReserva reporeserva)
 {
     readonly string _nombreArchivo = "Eventos.txt";
 
@@ -27,8 +27,8 @@ public class RepositorioEventosTXT: IRepositorioEvento(RepositorioReserva repore
             evento.Nombre = sr.ReadLine() ?? "";
             evento.Descripcion = sr.ReadLine() ?? "";
             evento.FechaHoraInicio = DateTime.Parse(sr.ReadLine() ?? "");
-            evento.DuracionHoras = Double.Parse(sr.ReadLine() ?? ""); 
-            evento.CupoMaximo = int.Parse(sr.ReadLine() ?? "");          
+            evento.DuracionHoras = Double.Parse(sr.ReadLine() ?? "");
+            evento.CupoMaximo = int.Parse(sr.ReadLine() ?? "");
             evento.ResponsableId = int.Parse(sr.ReadLine() ?? "");
             resultado.Add(evento);
         }
@@ -38,7 +38,7 @@ public class RepositorioEventosTXT: IRepositorioEvento(RepositorioReserva repore
     public void EliminarEvento(int id) {
         List<EventoDeportivo> eventos = ListarEventos(); //listo eventos actuales
         eventos = eventos.Where(e => e.Id != id).ToList(); //saco de la lista actual el evento con id "id" preguntar si esta bien.
-        using StreamWriter sw = new StreamWriter(_nombreArchivo,false); //hago UN REWRITE DEL TEXTO
+        using StreamWriter sw = new StreamWriter(_nombreArchivo, false); //hago UN REWRITE DEL TEXTO
 
         foreach (var evento in eventos) {
             sw.WriteLine(evento.Id);
@@ -51,9 +51,9 @@ public class RepositorioEventosTXT: IRepositorioEvento(RepositorioReserva repore
         }
     }
 
-    public int ObtenerNuevoId (){ 
+    public int ObtenerNuevoId() {
         var lista = ListarEventos();
-        return lista.Any() ? lista.Max(p => p._id) + 1 : 1;    
+        return lista.Any() ? lista.Max(p => p._id) + 1 : 1;
     }
 
     public bool existeEvento(int id)
@@ -62,10 +62,17 @@ public class RepositorioEventosTXT: IRepositorioEvento(RepositorioReserva repore
         return lista.Any(e => e.Id == id);
     }
 
-     public EventoDeportivo? ObtenerPorId(int id)
+    public EventoDeportivo? ObtenerPorId(int id)
     {
         return ListarEventos().FirstOrDefault(e => e.Id == id);
     }
+    public bool esResponsable(int id) {
+        var lista = ListarEventos();
+
+        return lista.Any(e => e.ResponsableId == id);
+
+    }
+
 
 
 }

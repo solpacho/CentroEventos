@@ -8,7 +8,7 @@ public class PersonaModificacionUseCase(IRepositorioPersona repositorio, Validad
     {
         if (!validador.Validar(persona))
             throw new Exception(ValidacionException);
-        if (repositorio.ObtenerPorId(persona._id) == null)
+        if (repositorio.ObtenerPorId(persona.Id) == null)
             throw new Exception(EntidadNotFoundException);
         if (!autorizacion.PoseeElPermiso(idUsuario, Permiso.UsuarioModificacion))
             throw new Exception(FalloAutorizacionException);

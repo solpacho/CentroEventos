@@ -14,7 +14,7 @@ public class RepositorioReserva : IRepositorioReserva
         sw.WriteLine(reserva.PersonaId);
         sw.WriteLine(reserva.EventoDeportivoId);
         sw.WriteLine(reserva.FechaAltaReserva);
-        sw.WriteLine((int)reserva.EstadoAsistencia); // guardar enum como número
+        sw.WriteLine((int)reserva.Estado); // guardar enum como número
     }
 
     public List<Reserva> ListarReservas()
@@ -31,7 +31,7 @@ public class RepositorioReserva : IRepositorioReserva
             reserva.PersonaId = int.Parse(sr.ReadLine() ?? "0");
             reserva.EventoDeportivoId = int.Parse(sr.ReadLine() ?? "0");
             reserva.FechaAltaReserva = DateTime.Parse(sr.ReadLine() ?? "");
-            reserva.EstadoAsistencia = (EstadoAsistencia)int.Parse(sr.ReadLine() ?? "0");
+            reserva.Estado = (EstadoAsistencia)int.Parse(sr.ReadLine() ?? "0");
             lista.Add(reserva);
         }
         return lista;
@@ -69,7 +69,7 @@ public class RepositorioReserva : IRepositorioReserva
             sw.WriteLine(r.PersonaId);
             sw.WriteLine(r.EventoDeportivoId);
             sw.WriteLine(r.FechaAltaReserva);
-            sw.WriteLine((int)r.EstadoAsistencia);
+            sw.WriteLine((int)r.Estado);
         }
     }
 
@@ -79,14 +79,14 @@ public class RepositorioReserva : IRepositorioReserva
         return lista.Any() ? lista.Max(r => r.Id) + 1 : 1;
     }
 
-  /*  public bool existeReserva(int id)
-    {
-        var lista = ListarReservas();
-        return lista.Any(r => r.Id == id);
-    } puede servir?
-  */ 
-  
-    public bool ReservaExistente(int personaId, int eventoId)
+    /*  public bool existeReserva(int id)
+      {
+          var lista = ListarReservas();
+          return lista.Any(r => r.Id == id);
+      } puede servir?
+    */
+
+    public bool ReservaExistente(int personaId, int eventoId) //r eglas de uso: anteultima
     {
         var lista = ListarReservas();
         return lista.Any(r => r.PersonaId == personaId && r.EventoDeportivoId == eventoId);
@@ -97,6 +97,11 @@ public class RepositorioReserva : IRepositorioReserva
         var lista = ListarReservas();
         return lista.Count(r => r.EventoDeportivoId == eventoId);
     }
-    
+
+    public bool tieneReserva(int personaId) // reglas de uso: la ultima
+    { 
+        var lista = ListarReservas();
+        return lista.Any(r => r.PersonaId == personaId);
+    }
      
 }

@@ -16,4 +16,5 @@ public interface IRepositorioReserva
     // Métodos auxiliares
     bool ReservaExistente(int personaId, int eventoId);
     int CantidadReservasEvento(int eventoId);
+    bool tieneReserva(int id);
 }
