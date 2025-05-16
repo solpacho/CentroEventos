@@ -93,8 +93,5 @@ public class RepositorioPersona: IRepositorioPersona
         return (lista.Any(p => p.Id == id));
     }
 
-     public Persona? ObtenerPorId(int id)
-    {
-        return ListarPersonas().FirstOrDefault(r => r.Id == id);
-    }
+    
 }
