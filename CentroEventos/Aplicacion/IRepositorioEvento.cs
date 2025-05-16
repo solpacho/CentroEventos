@@ -14,5 +14,7 @@ public interface IRepositorioEvento
     bool esResponsable(int id);
 
     bool existeEvento(int id);
+
+    bool controlReserva(EventoDeportivo evento)
     
 }
