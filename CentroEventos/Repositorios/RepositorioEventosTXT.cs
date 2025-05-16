@@ -1,13 +1,13 @@
-using System;
-using CentroDeportivo.Aplicacion;
+using CentroEventos.Aplicacion;
+using Microsoft.VisualBasic;
 
 namespace CentroEventos.Repositorios;
 
-public class RepositorioEventosTXT : IRepositorioEvento(RepositorioReserva reporeserva)
+public class RepositorioEventosTXT : IRepositorioEvento 
 {
     readonly string _nombreArchivo = "Eventos.txt";
-
-    public void AgregarEvento(EventoDeportivo evento) {
+    public void AgregarEvento(EventoDeportivo evento)
+    {
         using var sw = new StreamWriter(_nombreArchivo, true); //if true -> reset() if false -> rewrite() 
         sw.WriteLine(evento.Id);
         sw.WriteLine(evento.Nombre);
@@ -18,10 +18,12 @@ public class RepositorioEventosTXT : IRepositorioEvento(RepositorioReserva repor
         sw.WriteLine(evento.ResponsableId);
     }
 
-    public List<EventoDeportivo> ListarEventos() {
+    public List<EventoDeportivo> ListarEventos()
+    {
         var resultado = new List<EventoDeportivo>();
         using var sr = new StreamReader(_nombreArchivo);
-        while (!sr.EndOfStream) {
+        while (!sr.EndOfStream)
+        {
             var evento = new EventoDeportivo();
             evento.Id = int.Parse(sr.ReadLine() ?? "");
             evento.Nombre = sr.ReadLine() ?? "";
@@ -35,12 +37,14 @@ public class RepositorioEventosTXT : IRepositorioEvento(RepositorioReserva repor
         return resultado;
     }
 
-    public void EliminarEvento(int id) {
+    public void EliminarEvento(int id)
+    {
         List<EventoDeportivo> eventos = ListarEventos(); //listo eventos actuales
         eventos = eventos.Where(e => e.Id != id).ToList(); //saco de la lista actual el evento con id "id" preguntar si esta bien.
         using StreamWriter sw = new StreamWriter(_nombreArchivo, false); //hago UN REWRITE DEL TEXTO
 
-        foreach (var evento in eventos) {
+        foreach (var evento in eventos)
+        {
             sw.WriteLine(evento.Id);
             sw.WriteLine(evento.Nombre);
             sw.WriteLine(evento.Descripcion);
@@ -51,9 +55,10 @@ public class RepositorioEventosTXT : IRepositorioEvento(RepositorioReserva repor
         }
     }
 
-    public int ObtenerNuevoId() {
+    public int ObtenerNuevoId()
+    {
         var lista = ListarEventos();
-        return lista.Any() ? lista.Max(p => p._id) + 1 : 1;
+        return lista.Any() ? lista.Max(p => p.Id) + 1 : 1;
     }
 
     public bool existeEvento(int id)
@@ -66,18 +71,39 @@ public class RepositorioEventosTXT : IRepositorioEvento(RepositorioReserva repor
     {
         return ListarEventos().FirstOrDefault(e => e.Id == id);
     }
-    public bool esResponsable(int id) {
+    public bool esResponsable(int id)
+    {
         var lista = ListarEventos();
 
         return lista.Any(e => e.ResponsableId == id);
 
     }
+    
 
-    public bool controlReserva(EventoDeportivo evento)
+    private void GuardarTodo(List<EventoDeportivo> lista)
     {
-        var reservas = _repo.CantidadReservasEvento(evento.Id);
-        return reservas < evento.CupoMaximo;
+        using var sw = new StreamWriter(_nombreArchivo, false);
+        foreach (var evento in lista)
+        {
+            sw.WriteLine(evento.Id);
+            sw.WriteLine(evento.Nombre);
+            sw.WriteLine(evento.Descripcion);
+            sw.WriteLine(evento.FechaHoraInicio.ToString("o")); // formato ISO 8601
+            sw.WriteLine(evento.DuracionHoras);
+            sw.WriteLine(evento.CupoMaximo);
+            sw.WriteLine(evento.ResponsableId);
+           
+        }
     }
 
+    public void Modificar(EventoDeportivo evento)
+    {
+        var lista = ListarEventos();
+        int indice = lista.FindIndex(r => r.Id == evento.Id);
+        if (indice == -1)
+            return;
 
+        lista[indice] = evento;
+        GuardarTodo(lista);
+    }
 }
