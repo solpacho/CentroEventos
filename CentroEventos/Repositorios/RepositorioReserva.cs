@@ -98,8 +98,5 @@ public class RepositorioReserva : IRepositorioReserva
         return lista.Count(r => r.EventoDeportivoId == eventoId);
     }
     
-     public Reserva? ObtenerPorId(int id)
-    {
-        return ListarReservas().FirstOrDefault(r => r.Id == id);
-    }
+     
 }
