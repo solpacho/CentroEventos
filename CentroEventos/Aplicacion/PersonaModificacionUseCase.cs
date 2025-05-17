@@ -1,4 +1,4 @@
-using CentroEventos.Aplicacion;
+using CentroEventos.Aplicacion;using CentroEventos.Aplicacion;
 
 namespace Aplicacion;
 
@@ -6,12 +6,19 @@ public class PersonaModificacionUseCase(IRepositorioPersona repositorio, Validad
 {
     public void Ejecutar(Persona persona, int idUsuario)
     {
-        if (!validador.Validar(persona))
-            throw new Exception(ValidacionException);
-        if (repositorio.ObtenerPorId(persona.Id) == null)
-            throw new Exception(EntidadNotFoundException);
-        if (!autorizacion.PoseeElPermiso(idUsuario, Permiso.UsuarioModificacion))
-            throw new Exception(FalloAutorizacionException);
+        if (!autorizacion.PoseeElPermiso(idUsuario, Permiso.UsuarioModificacion)){
+            throw new FalloAutorizacionException("No posee el pemiso para realizar esta acción \n");
+        }
+
+        if (!validador.Validar(persona, out string mensajeError))
+        {
+            throw new ValidacionException(mensajeError);
+        }
+
+        if (!repositorio.existePersona(persona.Id)){
+            throw new EntidadNotFoundException("No se ha encontrado la persona. \n");
+        }
+    
         repositorio.Modificar(persona);
     }
 }
