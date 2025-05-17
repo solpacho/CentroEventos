@@ -1,18 +1,22 @@
+using CentroEventos.Aplicacion;
+
 namespace Aplicacion;
 
-public class ReservaBajaUseCase(IRepositorioReserva repositorio, ValidadorReserva validador, IServicioAutorizacion autorizacion)
+public class ReservaBajaUseCase(IRepositorioReserva repositorio, IServicioAutorizacion autorizacion)
 {
-    public void Ejecutar(int idPersona, int idUsuario)
+    public void Ejecutar(int idReserva, int idUsuario)
     {
-        if (!autorizacion.PoseeElPermiso(IdUsuario, Permiso.UsuarioBaja)) {
+        if (!autorizacion.PoseeElPermiso(idUsuario, Permiso.ReservaBaja)) {
             throw new FalloAutorizacionException("No posee permisos para realizar esta acción. \n");
         }
 
-        if (!repositorio.existePersona(idReserva)) {
-            throw new EntidadNotFound("No se ha encontrado la reserva. \n")
+        if (!repositorio.existeReserva(idReserva)) { //faltaria esto en el repo
+            throw new EntidadNotFoundException("No se ha encontrado la reserva. \n");
         }
+
+
         //reglas!!
-        repositorio.EliminarPersona(idReserva);
+        repositorio.Eliminar(idReserva);
     }
 
 }
