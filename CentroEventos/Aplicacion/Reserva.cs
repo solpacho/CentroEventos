@@ -10,9 +10,8 @@ public class Reserva
     public EstadoAsistencia Estado { get; set; }
 
     public Reserva() { }
-    public Reserva(int id, int personaid, int eventodeportivoid, EstadoAsistencia estado)
+    public Reserva(int personaid, int eventodeportivoid, EstadoAsistencia estado)
     {
-        Id = id;
         PersonaId = personaid;
         EventoDeportivoId = eventodeportivoid;
         FechaAltaReserva = DateTime.Now;
