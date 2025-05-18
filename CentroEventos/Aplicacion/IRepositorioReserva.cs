@@ -14,7 +14,9 @@ public interface IRepositorioReserva
     void Eliminar(int id);
 
     // Métodos auxiliares
+    bool ExisteReserva(int id);
     bool ReservaExistente(int personaId, int eventoId);
     int CantidadReservasEvento(int eventoId);
-    bool tieneReserva(int id);
+    bool TieneReserva(int id);
+    
 }

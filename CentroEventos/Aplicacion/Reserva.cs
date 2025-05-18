@@ -8,16 +8,13 @@ public class Reserva
     
     public DateTime FechaAltaReserva {get;set;}
     public EstadoAsistencia Estado { get; set; }
-    public enum EstadoAsistencia{
-        Pendiente,
-        Presente,
-        Ausente
-    }
 
-    public Reserva(int id, int personaid, int eventodeportivoid, EstadoAsistencia estado){
-        Id=id;
-        PersonaId=personaid;
-        EventoDeportivoId=eventodeportivoid;
+    public Reserva() { }
+    public Reserva(int id, int personaid, int eventodeportivoid, EstadoAsistencia estado)
+    {
+        Id = id;
+        PersonaId = personaid;
+        EventoDeportivoId = eventodeportivoid;
         FechaAltaReserva = DateTime.Now;
         Estado = estado; // preguntar si está bien implementado enum
 

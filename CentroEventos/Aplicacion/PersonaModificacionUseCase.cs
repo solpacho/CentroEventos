@@ -1,6 +1,6 @@
-using CentroEventos.Aplicacion;using CentroEventos.Aplicacion;
+using CentroEventos.Aplicacion;
 
-namespace Aplicacion;
+namespace CentroEventos.Aplicacion;
 
 public class PersonaModificacionUseCase(IRepositorioPersona repositorio, ValidadorPersona validador, IServicioAutorizacion autorizacion)
 {
@@ -15,7 +15,7 @@ public class PersonaModificacionUseCase(IRepositorioPersona repositorio, Validad
             throw new ValidacionException(mensajeError);
         }
 
-        if (!repositorio.existePersona(persona.Id)){
+        if (!repositorio.ExistePersona(persona.Id)){
             throw new EntidadNotFoundException("No se ha encontrado la persona. \n");
         }
     

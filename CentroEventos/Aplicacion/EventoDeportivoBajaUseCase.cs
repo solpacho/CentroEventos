@@ -11,10 +11,9 @@ public class EventoDeportivoBajaUseCase(IRepositorioEvento repositorio, IReposit
             throw new FalloAutorizacionException("No posee permisos para realizar esta acción. \n");
         }
 
-        if (!repositorio.existeEvento(idEvento)) {
+        if (!repositorio.ExisteEvento(idEvento)) {
             throw new EntidadNotFoundException("No se ha encontrado el evento. \n");
         }
-        //reglas!!
 
         //No puede eliminarse un EventoDeportivo si existen Reservas asociadas al mismo
         if (repoReservas.CantidadReservasEvento(idEvento) > 0){

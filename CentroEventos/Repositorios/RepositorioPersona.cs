@@ -88,7 +88,7 @@ public class RepositorioPersona: IRepositorioPersona
         return (lista.Any(p => p.Email == email));
     }
     
-    public bool existePersona(int id) {
+    public bool ExistePersona(int id) {
         var lista = ListarPersonas();
         return (lista.Any(p => p.Id == id));
     }

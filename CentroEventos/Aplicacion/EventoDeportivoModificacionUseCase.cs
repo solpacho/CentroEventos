@@ -1,6 +1,6 @@
 using System;
 using CentroEventos.Aplicacion;
-namespace Aplicacion;
+namespace CentroEventos.Aplicacion;
 
 public class EventoDeportivoModificacionUseCase(IRepositorioEvento repositorio, ValidadorEventos validador, IServicioAutorizacion autorizacion)
 {
@@ -14,7 +14,7 @@ public class EventoDeportivoModificacionUseCase(IRepositorioEvento repositorio, 
                 throw new ValidacionException(mensajeError);
             }
 
-        if (!repositorio.existeEvento(evento.Id)){
+        if (!repositorio.ExisteEvento(evento.Id)){
             throw new EntidadNotFoundException("No se ha encontrado el evento. \n");
         }
         

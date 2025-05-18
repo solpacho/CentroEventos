@@ -1,4 +1,4 @@
-namespace Aplicacion;
+namespace CentroEventos.Aplicacion;
 
 public enum Permiso{
     EventoAlta,

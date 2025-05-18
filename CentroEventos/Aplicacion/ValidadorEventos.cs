@@ -21,7 +21,7 @@ public class ValidadorEventos(IRepositorioPersona repoper)
         if (DateTime.Compare(evento.FechaHoraInicio,DateTime.Now)<0) {
             mensajeError = "La fecha debe ser posterior o igual a la fecha actual. \n";
         }
-        if (!repoper.existePersona(evento.ResponsableId)) {
+        if (!repoper.ExistePersona(evento.ResponsableId)) {
             mensajeError = "ID de Responsable inválido \n";
         }
         return (mensajeError=="");

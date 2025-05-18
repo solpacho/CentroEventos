@@ -1,6 +1,6 @@
 using CentroEventos.Aplicacion;
 
-namespace Aplicacion;
+namespace CentroEventos.Aplicacion;
 
 public class ReservaBajaUseCase(IRepositorioReserva repositorio, IServicioAutorizacion autorizacion)
 {
@@ -10,7 +10,7 @@ public class ReservaBajaUseCase(IRepositorioReserva repositorio, IServicioAutori
             throw new FalloAutorizacionException("No posee permisos para realizar esta acción. \n");
         }
 
-        if (!repositorio.existeReserva(idReserva)) { //faltaria esto en el repo
+        if (!repositorio.ExisteReserva(idReserva)) { //faltaria esto en el repo
             throw new EntidadNotFoundException("No se ha encontrado la reserva. \n");
         }
 

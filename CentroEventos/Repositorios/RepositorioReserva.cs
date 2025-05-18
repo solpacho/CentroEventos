@@ -79,12 +79,12 @@ public class RepositorioReserva : IRepositorioReserva
         return lista.Any() ? lista.Max(r => r.Id) + 1 : 1;
     }
 
-    /*  public bool existeReserva(int id)
+    public bool ExisteReserva(int id)
       {
           var lista = ListarReservas();
           return lista.Any(r => r.Id == id);
-      } puede servir?
-    */
+      }
+    
 
     public bool ReservaExistente(int personaId, int eventoId) //r eglas de uso: anteultima
     {
@@ -98,7 +98,7 @@ public class RepositorioReserva : IRepositorioReserva
         return lista.Count(r => r.EventoDeportivoId == eventoId);
     }
 
-    public bool tieneReserva(int personaId) // reglas de uso: la ultima
+    public bool TieneReserva(int personaId) // reglas de uso: la ultima
     { 
         var lista = ListarReservas();
         return lista.Any(r => r.PersonaId == personaId);

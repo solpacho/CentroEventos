@@ -61,7 +61,7 @@ public class RepositorioEventosTXT : IRepositorioEvento
         return lista.Any() ? lista.Max(p => p.Id) + 1 : 1;
     }
 
-    public bool existeEvento(int id)
+    public bool ExisteEvento(int id)
     {
         var lista = ListarEventos();
         return lista.Any(e => e.Id == id);
@@ -71,7 +71,7 @@ public class RepositorioEventosTXT : IRepositorioEvento
     {
         return ListarEventos().FirstOrDefault(e => e.Id == id);
     }
-    public bool esResponsable(int id)
+    public bool EsResponsable(int id)
     {
         var lista = ListarEventos();
 

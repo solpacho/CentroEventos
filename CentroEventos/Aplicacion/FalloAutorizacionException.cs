@@ -1,6 +1,6 @@
 using System;
 
-namespace Aplicacion;
+namespace CentroEventos.Aplicacion;
 
 public class FalloAutorizacionException : Exception
 {

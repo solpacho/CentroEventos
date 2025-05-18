@@ -2,13 +2,13 @@ using System;
 using CentroEventos.Aplicacion;
 namespace Aplicacion;
 
-public class ListarAsistenciaAEventoUseCase(IRepositorioEvento repositorioE, IRepositorioReserva repositorioR, IRepositorioPersona repositorioP ValidadorEventos validador)
+public class ListarAsistenciaAEventoUseCase(IRepositorioEvento repositorioE, IRepositorioReserva repositorioR, IRepositorioPersona repositorioP, ValidadorEventos validador)
 {
     public List<Persona> Ejecutar(EventoDeportivo evento)
     {
         List<Persona> listaPresentes = new List<Persona>();
 
-        if (!repositorioE.existeEvento(evento.Id)){
+        if (!repositorioE.ExisteEvento(evento.Id)){
                  
             throw new EntidadNotFoundException("No se ha encontrado el evento. \n");
         }
@@ -26,9 +26,9 @@ public class ListarAsistenciaAEventoUseCase(IRepositorioEvento repositorioE, IRe
         List<Reserva> reservas = repositorioR.ListarReservas(); //obtengo todas las reservas
         foreach (Reserva r in reservas)
         {
-            if ((r.EventoDeportivoId == evento.Id) && (r.Estado == Reserva.EstadoAsistencia.Presente)) //si la reserva es de este evento y se asistió
+            if ((r.EventoDeportivoId == evento.Id) && (r.Estado == EstadoAsistencia.Presente)) //si la reserva es de este evento y se asistió
             {
-                Persona p = repositorioP.ObtenerPorId(r.PersonaId);
+                Persona? p = repositorioP.ObtenerPorId(r.PersonaId);
                 listaPresentes.Add(p);
             }
         }

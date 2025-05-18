@@ -16,6 +16,6 @@ public interface IRepositorioPersona
     
     bool DniRepetido(string dni);
     bool EmailRepetido(string mail); 
-    bool existePersona(int id);
+    bool ExistePersona(int id);
 
 }
