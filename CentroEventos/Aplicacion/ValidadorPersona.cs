@@ -2,7 +2,7 @@ using System;
 
 namespace CentroEventos.Aplicacion;
 
-public class ValidadorPersona(IRepositorioPersona repo)
+public class ValidadorPersona()
 {
 
     public bool Validar(Persona p, out string mensajeError)

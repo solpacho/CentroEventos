@@ -5,7 +5,7 @@ namespace Aplicacion;
 public class ListarEventosConCupoDisponibleUseCase(IRepositorioEvento repoEventos, IRepositorioReserva repoReserva) {
     public List<EventoDeportivo> Ejecutar()
     {
-        List<EventoDeportivo> lista = new List<EventoDeportivo>();
+        var lista = new List<EventoDeportivo>();
 
         var listaeventos = repoEventos.ListarEventos();
 

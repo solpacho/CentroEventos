@@ -15,7 +15,6 @@ public class ReservaBajaUseCase(IRepositorioReserva repositorio, IServicioAutori
         }
 
 
-        //reglas!!
         repositorio.Eliminar(idReserva);
     }
 

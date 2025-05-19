@@ -27,8 +27,6 @@ IRepositorioPersona repoPersona, IServicioAutorizacion autorizacion)
             throw new DuplicadoException("Ya se ha reservado a esta persona para este evento. \n");
         }
 
-        //hacer segun reglas, hagan asi cada if de las excepciones es mas legible
-
         //Un EventoDeportivo no puede tener más Reservas que su CupoMaximo.
         EventoDeportivo? evento = repoEvento.ObtenerPorId(datosReserva.EventoDeportivoId); //faltaria esto en el repo de eventos
         if (!(repoReserva.CantidadReservasEvento(datosReserva.Id) < evento.CupoMaximo))

@@ -15,11 +15,11 @@ public class Reserva
         PersonaId = personaid;
         EventoDeportivoId = eventodeportivoid;
         FechaAltaReserva = DateTime.Now;
-        Estado = estado; // preguntar si está bien implementado enum
+        Estado = estado;
 
     }
 
-    public String toString(){
+    public override String ToString(){
         
         return $"ID: {Id}, id de la Persona: {PersonaId}, id evento deportivo: {EventoDeportivoId}"; 
     }

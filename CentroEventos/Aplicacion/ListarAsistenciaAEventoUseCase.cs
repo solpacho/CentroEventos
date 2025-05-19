@@ -6,10 +6,11 @@ public class ListarAsistenciaAEventoUseCase(IRepositorioEvento repositorioE, IRe
 {
     public List<Persona> Ejecutar(EventoDeportivo evento)
     {
-        List<Persona> listaPresentes = new List<Persona>();
+        var listaPresentes = new List<Persona>();
+        
+        if (!repositorioE.ExisteEvento(evento.Id))
+        {
 
-        if (!repositorioE.ExisteEvento(evento.Id)){
-                 
             throw new EntidadNotFoundException("No se ha encontrado el evento. \n");
         }
 

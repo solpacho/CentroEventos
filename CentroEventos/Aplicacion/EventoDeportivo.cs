@@ -5,12 +5,12 @@ namespace CentroEventos.Aplicacion;
 public class EventoDeportivo
 {
     public int Id { get; set; }
-    public string Nombre { get; set; }
+    public string? Nombre { get; set; }
     public int CupoMaximo { get; set; }
     public int ResponsableId { get; set; }
     public DateTime FechaHoraInicio { get; set; }
     public double DuracionHoras { get; set; }
-    public string Descripcion { get; set; }
+    public string? Descripcion { get; set; }
 
     public EventoDeportivo() { }
 
@@ -24,7 +24,7 @@ public class EventoDeportivo
         Descripcion = desc;
     }
     
-    public String toString(){
+    public override String ToString(){
         
         return $"ID: {Id}, nombre del evento: {Nombre}, cupo máximo: {CupoMaximo}, responsable: {ResponsableId}, fecha de inicio: {FechaHoraInicio}, duración {DuracionHoras}, descripción {Descripcion}"; 
     }
