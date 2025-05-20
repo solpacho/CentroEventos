@@ -14,11 +14,6 @@ public class ListarAsistenciaAEventoUseCase(IRepositorioEvento repositorioE, IRe
             throw new EntidadNotFoundException("No se ha encontrado el evento. \n");
         }
 
-        if (!validador.Validar(evento, out string mensajeError)){
-                 
-            throw new ValidacionException(mensajeError);
-        }
-
         if (!(evento.FechaHoraInicio < DateTime.Now)){ //si no es un evento pasado
                  
             throw new OperacionInvalidaException("Este evento no es un evento pasado");
