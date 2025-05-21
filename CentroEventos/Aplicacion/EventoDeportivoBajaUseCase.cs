@@ -21,6 +21,5 @@ public class EventoDeportivoBajaUseCase(IRepositorioEvento repositorio, IReposit
         }
             
         repositorio.EliminarEvento(idEvento);
-        Console.WriteLine("Evento Deportivo eliminado con éxito");
     }
 }
