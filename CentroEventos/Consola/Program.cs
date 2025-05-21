@@ -177,7 +177,7 @@ static void MenuEventos(EventoDeportivoAltaUseCase alta, EventoDeportivoBajaUseC
                 double duracion = double.Parse(Console.ReadLine()!);
                 Console.Write("Descripción: ");
                 string descripcion = Console.ReadLine()!;
-                var evento = new EventoDeportivo(nombre, cupo, idResp, fecha, duracion, descripcion);
+                var evento = new EventoDeportivo(nombre, cupo, idResp, duracion,fecha, descripcion);
                 try { alta.Ejecutar(evento, idUsuario); Console.WriteLine("Evento creado."); }
                 catch (Exception ex) { Console.WriteLine($"Error: {ex.Message}"); }
                 break;
@@ -204,7 +204,7 @@ static void MenuEventos(EventoDeportivoAltaUseCase alta, EventoDeportivoBajaUseC
                 var d = double.Parse(Console.ReadLine()!);
                 Console.Write("Nueva Descripción: ");
                 string desc = Console.ReadLine()!;
-                var ev = new EventoDeportivo(n, c, idR, f, d, desc) { Id = idMod }; //necesario????
+                var ev = new EventoDeportivo(n, c, idR,d,f, desc) { Id = idMod }; //necesario????
                 try { modificar.Ejecutar(ev, idUsuario); Console.WriteLine("Evento modificado."); }
                 catch (Exception ex) { Console.WriteLine($"Error: {ex.Message}"); }
                 break;
