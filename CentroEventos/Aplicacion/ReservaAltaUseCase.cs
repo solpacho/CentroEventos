@@ -38,6 +38,5 @@ IRepositorioPersona repoPersona, IServicioAutorizacion autorizacion)
         datosReserva.Id = repoReserva.ObtenerNuevoId();
 
         repoReserva.AgregarReserva(datosReserva);
-        Console.WriteLine("Reserva agregada con éxito");
     }
 }
