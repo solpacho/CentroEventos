@@ -33,6 +33,5 @@ public class PersonaBajaUseCase(IRepositorioPersona repositorioP, IServicioAutor
         }
 
         repositorioP.Eliminar(idPersona);
-        Console.WriteLine("Persona eliminada con éxito");
     }
 }
