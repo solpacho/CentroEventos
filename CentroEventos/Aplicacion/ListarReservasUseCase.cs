@@ -4,5 +4,5 @@ namespace CentroEventos.Aplicacion;
 
 public class ListarReservasUseCase(IRepositorioReserva repositorio)
 {
-    public void Ejecutar() => repositorio.ListarReservas(); 
+    public List <Reserva> Ejecutar() => repositorio.ListarReservas(); 
 }
