@@ -7,7 +7,7 @@ namespace CentroEventos.Repositorios;
 public class RepositorioPersona: IRepositorioPersona
 {
 
-    readonly string _nombreArchivo = " personas.txt ";
+    readonly string _nombreArchivo = "personas.txt";
     
     public void AgregarPersona (Persona persona){
         persona.Id = ObtenerNuevoId();
@@ -30,10 +30,11 @@ public class RepositorioPersona: IRepositorioPersona
         using var sr = new StreamReader (_nombreArchivo);
         while (!sr.EndOfStream){
             var persona = new Persona();
-            persona.Id = int.Parse(sr.ReadLine() ?? "");
+            persona.Id =  int.Parse (sr.ReadLine() ?? "");
             persona.DNI = sr.ReadLine() ?? "";
             persona.Nombre = sr.ReadLine() ?? "";
             persona.Apellido = sr.ReadLine () ?? "";
+            persona.Email = sr.ReadLine() ?? "";
             persona.Telefono = sr.ReadLine () ?? "";
             resultado.Add(persona);
         }
