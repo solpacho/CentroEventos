@@ -15,6 +15,5 @@ public class ReservaModificacionUseCase(IRepositorioReserva repositorio, IServic
         }
  
         repositorio.Modificar(reserva);
-        Console.WriteLine("Reserva modificada con éxito");
     }
 }
