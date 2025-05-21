@@ -25,7 +25,6 @@ public class PersonaAltaUseCase(IRepositorioPersona repositorio, ValidadorPerson
         persona.Id = repositorio.ObtenerNuevoId(); //asigno id.
 
         repositorio.AgregarPersona(persona);
-        Console.WriteLine("Persona agregada con éxito");
     }
 
 }
