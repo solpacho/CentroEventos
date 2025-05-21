@@ -21,7 +21,6 @@ public class EventoDeportivoAltaUseCase(IRepositorioEvento repositorio, Validado
         evento.Id = repositorio.ObtenerNuevoId();
 
         repositorio.AgregarEvento(evento);
-        Console.WriteLine("Evento Deportivo agregado con éxito");
     }
 }
    
