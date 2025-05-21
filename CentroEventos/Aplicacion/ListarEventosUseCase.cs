@@ -4,5 +4,5 @@ namespace CentroEventos.Aplicacion;
 
 public class ListarEventosUseCase(IRepositorioEvento repositorio)
 {
-    public void Ejecutar() => repositorio.ListarEventos();
+    public List <EventoDeportivo> Ejecutar() => repositorio.ListarEventos();
 }
