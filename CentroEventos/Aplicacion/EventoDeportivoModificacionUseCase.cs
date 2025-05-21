@@ -19,6 +19,5 @@ public class EventoDeportivoModificacionUseCase(IRepositorioEvento repositorio, 
         }
         
         repositorio.Modificar(evento);
-        Console.WriteLine("Evento Deportivo modificado con éxito");
     }
 }
