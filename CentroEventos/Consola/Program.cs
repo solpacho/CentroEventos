@@ -125,7 +125,7 @@ static void MenuPersonas(PersonaAltaUseCase alta, PersonaBajaUseCase baja, Perso
                 Console.Write("Nuevo Teléfono: ");
                 string telMod = Console.ReadLine()!;
                 var personaMod = new Persona(dniMod, nomMod, apeMod, mailMod, telMod) { Id = idMod };
-                try { modificar.Ejecutar(personaMod, idUsuario); Console.WriteLine("✅ Persona modificada."); }
+                try { modificar.Ejecutar(personaMod, idUsuario); Console.WriteLine("Persona modificada."); }
                 catch (Exception ex) { Console.WriteLine($"Error: {ex.Message}"); }
                 break;
 
@@ -205,7 +205,7 @@ static void MenuEventos(EventoDeportivoAltaUseCase alta, EventoDeportivoBajaUseC
                 Console.Write("Nueva Descripción: ");
                 string desc = Console.ReadLine()!;
                 var ev = new EventoDeportivo(n, c, idR, f, d, desc) { Id = idMod }; //necesario????
-                try { modificar.Ejecutar(ev, idUsuario); Console.WriteLine("✅ Evento modificado."); }
+                try { modificar.Ejecutar(ev, idUsuario); Console.WriteLine("Evento modificado."); }
                 catch (Exception ex) { Console.WriteLine($"Error: {ex.Message}"); }
                 break;
 
@@ -249,7 +249,7 @@ static void MenuReservas(ReservaAltaUseCase alta, ReservaBajaUseCase baja, Reser
                 int idPersona = int.Parse(Console.ReadLine()!);
                 Console.Write("ID Evento: ");
                 int idEvento = int.Parse(Console.ReadLine()!);
-                var estado = EstadoAsistencia.Pendiente; //esta bien?
+                var estado = EstadoAsistencia.Pendiente; //esta bien? o con numeros?
                 var reserva = new Reserva(idPersona, idEvento, estado);
                 try { alta.Ejecutar(reserva, idUsuario); Console.WriteLine(" Reserva creada."); }
                 catch (Exception ex) { Console.WriteLine($" Error: {ex.Message}"); }
@@ -267,7 +267,7 @@ static void MenuReservas(ReservaAltaUseCase alta, ReservaBajaUseCase baja, Reser
                 int idMod = int.Parse(Console.ReadLine()!);
                 Console.Write("ID Evento: ");
                 int idEvMod = int.Parse(Console.ReadLine()!);
-                Console.Write("Nuevo estado (0=Pendiente, 1=Presente, 2=Ausente): ");
+                Console.Write("Nuevo estado (0=Pendiente, 1=Presente, 2=Ausente): "); //preguntar si el estado se asigna asi
                 var nuevoEstado = (EstadoAsistencia)int.Parse(Console.ReadLine()!);
                 var nuevaReserva = new Reserva(idMod,idEvMod,nuevoEstado) { Id = idMod };
                 try { modificar.Ejecutar(nuevaReserva, idUsuario); Console.WriteLine("Reserva modificada."); }
