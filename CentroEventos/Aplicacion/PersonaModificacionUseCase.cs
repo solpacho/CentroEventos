@@ -20,5 +20,6 @@ public class PersonaModificacionUseCase(IRepositorioPersona repositorio, Validad
         }
     
         repositorio.Modificar(persona);
+        Console.WriteLine("Persona modificada con éxito");
     }
 }
