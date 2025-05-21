@@ -16,6 +16,7 @@ public class ReservaBajaUseCase(IRepositorioReserva repositorio, IServicioAutori
 
 
         repositorio.Eliminar(idReserva);
+        Console.WriteLine("Reserva eliminada con éxito");
     }
 
 }
