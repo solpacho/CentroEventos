@@ -277,7 +277,7 @@ static void MenuReservas(ReservaAltaUseCase alta, ReservaBajaUseCase baja, Reser
             case 4:
                 var reservas = listar.Ejecutar();
                 Console.WriteLine("--- Reservas ---");
-                foreach (var r in reservas) Console.WriteLine(r);
+                foreach (var r in reservas) Console.WriteLine(r.ToString());
                 break;
 
             case 5:
