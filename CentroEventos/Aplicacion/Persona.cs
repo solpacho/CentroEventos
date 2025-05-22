@@ -23,7 +23,7 @@ public class Persona
     
     public Persona() {}
 
-    public String ToString(){
+    public override String ToString(){
         
         return $"DNI: {DNI}, nombre: {Nombre}  {Apellido}, email: {Email}, teléfono: {Telefono}"; 
     }
