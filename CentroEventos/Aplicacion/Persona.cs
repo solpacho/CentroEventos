@@ -23,7 +23,7 @@ public class Persona
     
     public Persona() {}
 
-    public String toString(){
+    public String ToString(){
         
         return $"DNI: {DNI}, nombre: {Nombre}  {Apellido}, email: {Email}, teléfono: {Telefono}"; 
     }
