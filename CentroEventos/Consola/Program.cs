@@ -132,7 +132,7 @@ static void MenuPersonas(PersonaAltaUseCase alta, PersonaBajaUseCase baja, Perso
             case 4:
                 var lista = listar.Ejecutar(); //preguntar manana con los chicos cambie de void a list
                 Console.WriteLine("--- Personas ---");
-                foreach (var p in lista) Console.WriteLine(p);
+                foreach (var p in lista) Console.WriteLine(p.ToString());
                 break;
 
             case 5:
@@ -212,7 +212,7 @@ static void MenuEventos(EventoDeportivoAltaUseCase alta, EventoDeportivoBajaUseC
             case 4:
                 var eventos = listar.Ejecutar();
                 Console.WriteLine("--- Eventos Deportivos ---");
-                foreach (var e in eventos) Console.WriteLine(e);
+                foreach (var e in eventos) Console.WriteLine(e.ToString());
                 break;
 
             case 5:
