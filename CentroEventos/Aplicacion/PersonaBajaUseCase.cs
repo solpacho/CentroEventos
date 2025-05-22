@@ -14,11 +14,6 @@ public class PersonaBajaUseCase(IRepositorioPersona repositorioP, IServicioAutor
         {
             throw new EntidadNotFoundException("No se ha encontrado la persona. \n");
         }
-
-        Persona? p = repositorioP.ObtenerPorId(idPersona); //hago esto unicamente si la persona existe
-        if (!validador.Validar(p, out string mensajeError)){ //no se como resolver la warning
-            throw new ValidacionException(mensajeError);
-        }
         
         // reglas
 
