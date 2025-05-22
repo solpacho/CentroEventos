@@ -23,6 +23,8 @@ var altaEvento = new EventoDeportivoAltaUseCase(repoEvento, validadorEvento, ser
 var bajaEvento = new EventoDeportivoBajaUseCase(repoEvento, repoReserva, servicioAutorizacion);
 var modificarEvento = new EventoDeportivoModificacionUseCase(repoEvento, validadorEvento, servicioAutorizacion);
 var listarEventos = new ListarEventosUseCase(repoEvento);
+var listarEventosConCupoDisp = new ListarEventosConCupoDisponibleUseCase(repoEvento, repoReserva);
+var listarAsistenciaEvento = new ListarAsistenciaAEventoUseCase(repoEvento, repoReserva, repoPersona, validadorEvento);
 
 // Reservas
 var altaReserva = new ReservaAltaUseCase(repoReserva, repoEvento, repoPersona, servicioAutorizacion);
@@ -53,7 +55,7 @@ while (!salir)
             MenuPersonas(altaPersona, bajaPersona, modificarPersona, listarPersonas, idUsuario);
             break;
         case 2:
-            MenuEventos(altaEvento, bajaEvento, modificarEvento, listarEventos, idUsuario);
+            MenuEventos(altaEvento, bajaEvento, modificarEvento, listarEventos, listarEventosConCupoDisp, listarAsistenciaEvento, idUsuario);
             break;
         case 3:
             MenuReservas(altaReserva, bajaReserva, modificarReserva, listarReservas, idUsuario);
@@ -132,7 +134,7 @@ static void MenuPersonas(PersonaAltaUseCase alta, PersonaBajaUseCase baja, Perso
             case 4:
                 var lista = listar.Ejecutar(); //preguntar manana con los chicos cambie de void a list
                 Console.WriteLine("--- Personas ---");
-                foreach (var p in lista) Console.WriteLine(p.ToString());
+                foreach (var p in lista) Console.WriteLine(p.toString());
                 break;
 
             case 5:
@@ -146,7 +148,7 @@ static void MenuPersonas(PersonaAltaUseCase alta, PersonaBajaUseCase baja, Perso
     }
 }
 
-static void MenuEventos(EventoDeportivoAltaUseCase alta, EventoDeportivoBajaUseCase baja, EventoDeportivoModificacionUseCase modificar, ListarEventosUseCase listar, int idUsuario)
+static void MenuEventos(EventoDeportivoAltaUseCase alta, EventoDeportivoBajaUseCase baja, EventoDeportivoModificacionUseCase modificar, ListarEventosUseCase listar, ListarEventosConCupoDisponibleUseCase listarC, ListarAsistenciaAEventoUseCase listarA, int idUsuario)
 {
     bool volver = false;
     while (!volver)
@@ -155,8 +157,10 @@ static void MenuEventos(EventoDeportivoAltaUseCase alta, EventoDeportivoBajaUseC
         Console.WriteLine("1. Alta");
         Console.WriteLine("2. Baja");
         Console.WriteLine("3. Modificación");
-        Console.WriteLine("4. Listado");
-        Console.WriteLine("5. Volver");
+        Console.WriteLine("4. Listado evento");
+        Console.WriteLine("5. Listado asistencia");
+        Console.WriteLine("6. Listado con cupo disponible");
+        Console.WriteLine("7. Volver");
 
         Console.Write("Opción: ");
         int opcion = int.Parse (Console.ReadLine()!);
@@ -171,7 +175,7 @@ static void MenuEventos(EventoDeportivoAltaUseCase alta, EventoDeportivoBajaUseC
                 int cupo = int.Parse(Console.ReadLine()!);
                 Console.Write("ID Responsable: ");
                 var idResp = int.Parse(Console.ReadLine()!);
-                Console.Write("Fecha y hora (yyyy-MM-dd HH:mm): ");
+                Console.Write(" Fecha y hora inicio: ");
                 DateTime fecha = DateTime.Parse(Console.ReadLine()!);
                 Console.Write("Duración (horas): ");
                 double duracion = double.Parse(Console.ReadLine()!);
@@ -216,6 +220,65 @@ static void MenuEventos(EventoDeportivoAltaUseCase alta, EventoDeportivoBajaUseC
                 break;
 
             case 5:
+
+                Console.Write("Ingrese un Evento deportivo: ");
+                Console.Write("Nombre: ");
+                string nom = Console.ReadLine()!;
+                Console.Write("Cupo máximo: ");
+                int cup = int.Parse(Console.ReadLine()!);
+                Console.Write("ID Responsable: ");
+                var idRe = int.Parse(Console.ReadLine()!);
+                Console.Write(" Fecha y hora inicio: ");
+                DateTime fec = DateTime.Parse(Console.ReadLine()!);
+                Console.Write("Duración (horas): ");
+                double dur = double.Parse(Console.ReadLine()!);
+                Console.Write("Descripción: ");
+                string des = Console.ReadLine()!;
+                var eventoD = new EventoDeportivo(nom, cup, idRe, dur,fec, des);
+                try
+                {
+                    var asistentes = listarA.Ejecutar(eventoD);
+                    Console.WriteLine("--- Personas que asistieron al evento ---");
+
+                    if (asistentes.Count == 0)
+                    {
+                        Console.WriteLine("Nadie asistió al evento.");
+                    }
+                    else
+                    {
+                        foreach (var p in asistentes)
+                            Console.WriteLine(p.ToString());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+                break;
+
+            case 6:
+                try
+                {
+                    var eventosConCupo = listarC.Ejecutar();
+                    Console.WriteLine("--- Eventos con cupo disponible ---");
+
+                    if (eventosConCupo.Count == 0)
+                    {
+                        Console.WriteLine("No hay eventos con cupo disponible.");
+                    }
+                    else
+                    {
+                        foreach (var e in eventosConCupo)
+                            Console.WriteLine(e.ToString());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+                break;
+
+            case 7: 
                 volver = true;
                 break;
 
@@ -277,7 +340,7 @@ static void MenuReservas(ReservaAltaUseCase alta, ReservaBajaUseCase baja, Reser
             case 4:
                 var reservas = listar.Ejecutar();
                 Console.WriteLine("--- Reservas ---");
-                foreach (var r in reservas) Console.WriteLine(r.ToString());
+                foreach (var r in reservas) Console.WriteLine(r);
                 break;
 
             case 5:
