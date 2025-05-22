@@ -12,7 +12,7 @@ IRepositorioPersona repoPersona, IServicioAutorizacion autorizacion)
             throw new FalloAutorizacionException("No tienes permisos para realizar esta acción. \n");
         }
 
-        if (repoPersona.ExistePersona(datosReserva.PersonaId))
+        if (!repoPersona.ExistePersona(datosReserva.PersonaId))
         {
             throw new EntidadNotFoundException("No existe persona con ese ID. \n");
         }
