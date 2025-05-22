@@ -17,7 +17,7 @@ IRepositorioPersona repoPersona, IServicioAutorizacion autorizacion)
             throw new EntidadNotFoundException("No existe persona con ese ID. \n");
         }
 
-        if (repoEvento.ExisteEvento(datosReserva.EventoDeportivoId))
+        if (!repoEvento.ExisteEvento(datosReserva.EventoDeportivoId))
         {
             throw new EntidadNotFoundException("No existe evento con ese ID. \n");
         }
