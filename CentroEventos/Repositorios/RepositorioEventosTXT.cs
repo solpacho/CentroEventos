@@ -40,7 +40,7 @@ public class RepositorioEventosTXT : IRepositorioEvento
     public void EliminarEvento(int id)
     {
         List<EventoDeportivo> eventos = ListarEventos(); //listo eventos actuales
-        eventos = eventos.Where(e => e.Id != id).ToList(); //saco de la lista actual el evento con id "id" preguntar si esta bien.
+        eventos = eventos.Where(e => e.Id != id).ToList(); //saco de la lista actual el evento con id "id"
         using StreamWriter sw = new StreamWriter(_nombreArchivo, false); //hago UN REWRITE DEL TEXTO
 
         foreach (var evento in eventos)
