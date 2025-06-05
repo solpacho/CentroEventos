@@ -34,9 +34,6 @@ IRepositorioPersona repoPersona, IServicioAutorizacion autorizacion)
             throw new CupoExcedidoException("El cupo de reservas de ese evento deportivo está lleno \n");
         }
 
-        //asigno id
-        datosReserva.Id = repoReserva.ObtenerNuevoId();
-
         repoReserva.AgregarReserva(datosReserva);
     }
 }
