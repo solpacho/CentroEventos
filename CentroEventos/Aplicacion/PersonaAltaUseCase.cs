@@ -21,8 +21,6 @@ public class PersonaAltaUseCase(IRepositorioPersona repositorio, ValidadorPerson
         if (repositorio.EmailRepetido(persona.Email)){
             throw new DuplicadoException("El Email ya existe. \n");
         }
-        
-        persona.Id = repositorio.ObtenerNuevoId(); //asigno id.
 
         repositorio.AgregarPersona(persona);
     }
