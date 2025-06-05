@@ -18,8 +18,6 @@ public class EventoDeportivoAltaUseCase(IRepositorioEvento repositorio, Validado
             throw new ValidacionException(mensajeError);
         }
 
-        evento.Id = repositorio.ObtenerNuevoId();
-
         repositorio.AgregarEvento(evento);
     }
 }
