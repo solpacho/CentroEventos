@@ -8,6 +8,7 @@ public class RepositorioEventosTXT : IRepositorioEvento
     readonly string _nombreArchivo = "Eventos.txt";
     public void AgregarEvento(EventoDeportivo evento)
     {
+        evento.Id = ObtenerNuevoId();
         using var sw = new StreamWriter(_nombreArchivo, true); //if true -> reset() if false -> rewrite() 
         sw.WriteLine(evento.Id);
         sw.WriteLine(evento.Nombre);
