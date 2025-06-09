@@ -25,6 +25,7 @@ public class ListarAsistenciaAEventoUseCase(IRepositorioEvento repositorioE, IRe
             if ((r.EventoDeportivoId == evento.Id) && (r.Estado == EstadoAsistencia.Presente)) //si la reserva es de este evento y se asistió
             {
                 Persona? p = repositorioP.ObtenerPorId(r.PersonaId);
+                if(p==null) throw new EntidadNotFoundException("No se encontró a la prsona");
                 listaPresentes.Add(p);
             }
         }
