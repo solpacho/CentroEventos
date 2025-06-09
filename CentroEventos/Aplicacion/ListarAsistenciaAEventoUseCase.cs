@@ -2,7 +2,7 @@ using System;
 using CentroEventos.Aplicacion;
 namespace Aplicacion;
 
-public class ListarAsistenciaAEventoUseCase(IRepositorioEvento repositorioE, IRepositorioReserva repositorioR, IRepositorioPersona repositorioP, ValidadorEventos validador)
+public class ListarAsistenciaAEventoUseCase(IRepositorioEvento repositorioE, IRepositorioReserva repositorioR, IRepositorioPersona repositorioP)
 {
     public List<Persona> Ejecutar(EventoDeportivo evento)
     {
