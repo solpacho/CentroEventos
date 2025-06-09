@@ -30,7 +30,7 @@ IRepositorioPersona repoPersona, IServicioAutorizacion autorizacion)
         //Un EventoDeportivo no puede tener más Reservas que su CupoMaximo.
         EventoDeportivo? evento = repoEvento.ObtenerPorId(datosReserva.EventoDeportivoId);
         if (evento == null) throw new EntidadNotFoundException("no existe el evento");
-        if (!(repoReserva.CantidadReservasEvento(datosReserva.Id) < evento.CupoMaximo))
+        if (!(repoReserva.CantidadReservasEvento(datosReserva.EventoDeportivoId) < evento.CupoMaximo))
         {
             throw new CupoExcedidoException("El cupo de reservas de ese evento deportivo está lleno \n");
         }
