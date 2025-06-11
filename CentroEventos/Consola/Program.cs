@@ -1,11 +1,17 @@
 using Aplicacion; //duda? 
 using CentroEventos.Aplicacion;
 using CentroEventos.Repositorios;
+using Repositorios;
 
 // === Configuración inicial ===
+// viejo:
 var repoPersona = new RepositorioPersona();
-var repoEvento = new RepositorioEventosTXT();
+//var repoEvento = new RepositorioEventosTXT(); 
 var repoReserva = new RepositorioReserva();
+
+//NUEVO:
+var repoEvento = new RepositorioEventosSQL();
+
 
 var servicioAutorizacion = new ServicioAutorizacionProvisorio();
 var validadorPersona = new ValidadorPersona ();
@@ -24,7 +30,7 @@ var bajaEvento = new EventoDeportivoBajaUseCase(repoEvento, repoReserva, servici
 var modificarEvento = new EventoDeportivoModificacionUseCase(repoEvento, validadorEvento, servicioAutorizacion);
 var listarEventos = new ListarEventosUseCase(repoEvento);
 var listarEventosConCupoDisp = new ListarEventosConCupoDisponibleUseCase(repoEvento, repoReserva);
-var listarAsistenciaEvento = new ListarAsistenciaAEventoUseCase(repoEvento, repoReserva, repoPersona, validadorEvento);
+var listarAsistenciaEvento = new ListarAsistenciaAEventoUseCase(repoEvento, repoReserva, repoPersona); // antes estaba ValidadorEvento como parametro pero no lo usa y estaba en rojo (SOL)
 
 // Reservas
 var altaReserva = new ReservaAltaUseCase(repoReserva, repoEvento, repoPersona, servicioAutorizacion);
@@ -134,7 +140,7 @@ static void MenuPersonas(PersonaAltaUseCase alta, PersonaBajaUseCase baja, Perso
             case 4:
                 var lista = listar.Ejecutar(); //preguntar manana con los chicos cambie de void a list
                 Console.WriteLine("--- Personas ---");
-                foreach (var p in lista) Console.WriteLine(p.toString());
+                foreach (var p in lista) Console.WriteLine(p.ToString());
                 break;
 
             case 5:
