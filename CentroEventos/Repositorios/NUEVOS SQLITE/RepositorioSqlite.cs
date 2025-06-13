@@ -1,4 +1,5 @@
 using CentroEventos.Aplicacion;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repositorios;
 
@@ -7,11 +8,14 @@ public class RepositorioSqlite
     public static void Inicializar()
     {
         using var context = new RepositorioContext();
-        if (context.Database.EnsureCreated())
+        
+        context.Database.EnsureCreated();
+        var connection = context.Database.GetDbConnection();
+        connection.Open();
+        using (var command = connection.CreateCommand())
         {
-            Console.WriteLine("Se creó base de datos"); // diapo 77
-            context.Add(new Persona("4455", "Sol", "PP", "sol.p@gmail.com", "2920"));
-            context.SaveChanges();
+            command.CommandText = "PRAGMA journal_mode=DELETE;";
+            command.ExecuteNonQuery();
         }
     }
 }

@@ -3,8 +3,6 @@ namespace CentroEventos.Aplicacion;
 
 public interface IRepositorioReserva
 {
-    //id
-    int ObtenerNuevoId();
     //
 
     void AgregarReserva(Reserva reserva);
