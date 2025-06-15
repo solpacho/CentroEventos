@@ -4,9 +4,6 @@ namespace CentroEventos.Aplicacion;
 
 public interface IRepositorioEvento
 {
-    //id
-    int ObtenerNuevoId();
-    //
 
     void AgregarEvento(EventoDeportivo evento);
     List<EventoDeportivo> ListarEventos();
