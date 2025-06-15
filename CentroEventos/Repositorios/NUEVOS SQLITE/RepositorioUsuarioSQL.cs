@@ -22,13 +22,6 @@ public class RepositorioUsuarioSQL : IRepositorioUsuario
         }
     }
 
-    void EstablecerPassword(string input)
-    {
-        using (var _context = new RepositorioContext())
-        { 
-            
-        }
-    }
 
 
 }

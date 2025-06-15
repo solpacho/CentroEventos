@@ -14,5 +14,4 @@ public interface IRepositorioUsuario
 
     // implementar void darPermiso
 
-    void EstablecerPassword(string input);
 }

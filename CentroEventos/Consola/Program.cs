@@ -1,7 +1,13 @@
-using Aplicacion; //duda? 
+using Aplicacion;
 using CentroEventos.Aplicacion;
 using CentroEventos.Repositorios;
 using Repositorios;
+
+// implementar con blazor
+builder.Services.AddScoped<IHashService, HashService>(); // implementación
+builder.Services.AddScoped<HashHelperUseCase>();         // helper
+builder.Services.AddScoped<UsuarioAltaUseCase>();         // alta usuario
+builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>(); // repo
 
 // === Configuración inicial ===
 // viejo:

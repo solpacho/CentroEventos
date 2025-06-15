@@ -15,7 +15,7 @@ public class ValidadorUsuario()
             MensajeError = "El apellido no puede estar vacío. \n";
         }
         
-        if (string.IsNullOrEmpty(u.Password))
+       if (string.IsNullOrEmpty(u.PasswordHash))
         {
             MensajeError = "La contraseña no puede estar vacío. \n";
         }

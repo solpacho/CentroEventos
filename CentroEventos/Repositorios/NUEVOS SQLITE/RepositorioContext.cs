@@ -15,7 +15,7 @@ namespace Repositorios
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=Repositorio.sqlite");
+            optionsBuilder.UseSqlite("Data Source=RepositorioProyecto.sqlite");
         }
     }
 }
