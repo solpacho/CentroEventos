@@ -1,20 +1,18 @@
-namespace CentroEventos.Aplicacion;
-using System.Security.Cryptography;
-using System.Text;
+using CentroEventos.Aplicacion.Servicios;
 
-public static class HashHelper
+namespace CentroEventos.Aplicacion;
+
+public class HashHelperUseCase
 {
-    public static string ObtenerSHA256Hash(string input)
+    private readonly IHashService _hashService;
+
+    public HashHelperUseCase(IHashService hashService)
     {
-        using (SHA256 sha256 = SHA256.Create())
-        {
-            byte[] bytes = Encoding.UTF8.GetBytes(input);
-            byte[] hash = sha256.ComputeHash(bytes);
-            return Convert.ToHexString(hash);
-        }
+        _hashService = hashService;
+    }
+
+    public string GenerarHash(string passwordPlano)
+    {
+        return _hashService.Hash(passwordPlano);
     }
 }
-
-
-
-
