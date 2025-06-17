@@ -1,14 +1,7 @@
 namespace CentroEventos.Aplicacion;
 
-public class DarPermisoUseCase
+public class DarPermisoUseCase(IServicioAutorizacion _servicioAutorizacion)
 {
-    private readonly IServicioAutorizacion _servicioAutorizacion;
-
-    public OtorgarPermisoUseCase(IServicioAutorizacion servicioAutorizacion)
-    {
-        _servicioAutorizacion = servicioAutorizacion;
-    }
-
     public void Ejecutar(int idEmisor, int idReceptor, Permiso permiso)
     {
         // Sólo permite dar permisos relacionados con usuarios

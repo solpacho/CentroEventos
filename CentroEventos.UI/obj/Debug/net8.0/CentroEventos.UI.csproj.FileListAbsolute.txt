@@ -41,3 +41,6 @@ C:\Users\HP\ProyectoNET\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\CentroEv
 C:\Users\HP\ProyectoNET\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\CentroEventos.UI.dll
 C:\Users\HP\ProyectoNET\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\refint\CentroEventos.UI.dll
 C:\Users\HP\ProyectoNET\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\CentroEventos.UI.pdb
+C:\Users\Juan Ignacio\Proyecto\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\CentroEventos.UI.dll
+C:\Users\Juan Ignacio\Proyecto\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\refint\CentroEventos.UI.dll
+C:\Users\Juan Ignacio\Proyecto\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\CentroEventos.UI.pdb

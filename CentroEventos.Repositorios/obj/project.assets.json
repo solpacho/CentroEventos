@@ -3182,8 +3182,8 @@
     },
     "CentroEventos.Aplicacion/1.0.0": {
       "type": "project",
-      "path": "../CentroEventos.APlicacion/CentroEventos.Aplicacion.csproj",
-      "msbuildProject": "../CentroEventos.APlicacion/CentroEventos.Aplicacion.csproj"
+      "path": "../CentroEventos.Aplicacion/CentroEventos.Aplicacion.csproj",
+      "msbuildProject": "../CentroEventos.Aplicacion/CentroEventos.Aplicacion.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -3195,19 +3195,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\HP\\.nuget\\packages\\": {}
+    "C:\\Users\\Juan Ignacio\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\HP\\ProyectoNET\\CentroEventos\\CentroEventos.Repositorios\\CentroEventos.Repositorios.csproj",
+      "projectUniqueName": "C:\\Users\\Juan Ignacio\\Proyecto\\CentroEventos\\CentroEventos.Repositorios\\CentroEventos.Repositorios.csproj",
       "projectName": "CentroEventos.Repositorios",
-      "projectPath": "C:\\Users\\HP\\ProyectoNET\\CentroEventos\\CentroEventos.Repositorios\\CentroEventos.Repositorios.csproj",
-      "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\HP\\ProyectoNET\\CentroEventos\\CentroEventos.Repositorios\\obj\\",
+      "projectPath": "C:\\Users\\Juan Ignacio\\Proyecto\\CentroEventos\\CentroEventos.Repositorios\\CentroEventos.Repositorios.csproj",
+      "packagesPath": "C:\\Users\\Juan Ignacio\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Juan Ignacio\\Proyecto\\CentroEventos\\CentroEventos.Repositorios\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Juan Ignacio\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -3219,8 +3219,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\HP\\ProyectoNET\\CentroEventos\\CentroEventos.APlicacion\\CentroEventos.Aplicacion.csproj": {
-              "projectPath": "C:\\Users\\HP\\ProyectoNET\\CentroEventos\\CentroEventos.APlicacion\\CentroEventos.Aplicacion.csproj"
+            "C:\\Users\\Juan Ignacio\\Proyecto\\CentroEventos\\CentroEventos.Aplicacion\\CentroEventos.Aplicacion.csproj": {
+              "projectPath": "C:\\Users\\Juan Ignacio\\Proyecto\\CentroEventos\\CentroEventos.Aplicacion\\CentroEventos.Aplicacion.csproj"
             }
           }
         }
@@ -3269,7 +3269,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.406/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.407/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
