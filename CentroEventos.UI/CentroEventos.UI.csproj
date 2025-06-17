@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CentroEventos.Aplicacion\CentroEventos.Aplicacion.csproj" />
+    <ProjectReference Include="..\CentroEventos.Repositorios\CentroEventos.Repositorios.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
