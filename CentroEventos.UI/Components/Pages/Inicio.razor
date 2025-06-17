@@ -3,22 +3,31 @@
 @inject SesionUsuario Sesion
 @implements IDisposable
 
-
-    <h3>Bienvenido</h3>
+@if (!Sesion.EstaAutenticado)
+{
+    <p>Redirigiendo...</p>
+}
+else
+{
+    <h3>Bienvenido @Sesion.UsuarioActual.Nombre</h3>
     <p>Esta es la página principal luego de iniciar sesión.</p>
-
     <button class="btn btn-danger" @onclick="CerrarSesion">Cerrar sesión</button>
+}
 
 @code {
     protected override void OnInitialized()
     {
         Sesion.OnChange += StateHasChanged;
+
+        if (!Sesion.EstaAutenticado)
+            Navigation.NavigateTo("/Login");
     }
 
     public void Dispose()
     {
         Sesion.OnChange -= StateHasChanged;
     }
+
     private void CerrarSesion()
     {
         Sesion.CerrarSesion();
