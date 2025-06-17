@@ -51,6 +51,21 @@ public class RepositorioUsuarioSQL : IRepositorioUsuario
         }
     }
 
-
+        public bool EmailRepetido(string email)
+    {
+        using (var _context = new RepositorioContext())
+        {
+            var EmailExistente = _context.Usuarios.Find(email);
+            return EmailExistente != null;
+        }
+    }
+    
+    public int ContarUsuarios()
+    {
+        using (var context = new RepositorioContext())
+        {
+            return context.Usuarios.Count();
+        }
+    }
 
 }
