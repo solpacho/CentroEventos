@@ -4,7 +4,7 @@
 
 <h3>Registro de nuevo usuario</h3>
 
-<EditForm Model="@modelo" OnValidSubmit="Registrarse" FormName="registros">
+<EditForm Model="@modelo" OnValidSubmit="Registrarse">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -25,35 +25,33 @@
 
     <div class="mb-3">
         <label>Contraseña:</label>
-        <InputText class="form-control" type="password" @bind-Value="password" />
+        <InputText class="form-control" type="password" @bind-Value="modelo.PasswordPlano" />
     </div>
 
     <button class="btn btn-primary" type="submit">Registrarse</button>
+</EditForm>
 
-    @if (!string.IsNullOrEmpty(mensajeExito))
+@if (!string.IsNullOrEmpty(mensajeExito))
 {
     <div class="alert alert-success">@mensajeExito</div>
 }
 
-</EditForm>
-
-
 @code {
-    private Usuario modelo = new();
-    private string password = "";
+    private RegistroUsuarioModel modelo = new();
     private string mensajeExito = "";
 
     private void Registrarse()
     {
         try
         {
-            AltaUsuario.Ejecutar(modelo, password);
+            var u = new Usuario(modelo.Nombre, modelo.Apellido, modelo.Email);
+            AltaUsuario.Ejecutar(u, modelo.PasswordPlano);
+
             mensajeExito = "Usuario registrado con éxito. Redirigiendo...";
             Navigation.NavigateTo("/Login");
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             mensajeExito = $"Error al registrar: {ex.Message}";
         }
     }
