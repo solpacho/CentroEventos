@@ -4,9 +4,6 @@ namespace CentroEventos.Aplicacion;
 
 public interface IRepositorioPersona
 {
-    //id
-    int ObtenerNuevoId();
-    //
 
     void AgregarPersona(Persona persona);
     Persona? ObtenerPorId(int id);

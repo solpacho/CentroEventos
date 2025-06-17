@@ -13,8 +13,15 @@ public class RepositorioUsuarioSQL : IRepositorioUsuario
             _context.SaveChanges();
         }
     }
+    public bool ExisteUsuario(int id)
+    {
+        using (var _context = new RepositorioContext())
+        {
+            return _context.Usuarios.Any(u => u.Id == id);
+        }
+    }
     public void EliminarUsuario(int id)
-    { 
+    {
         using (var _context = new RepositorioContext())
         {
             var usuario = _context.Usuarios.Find(id);
@@ -24,23 +31,24 @@ public class RepositorioUsuarioSQL : IRepositorioUsuario
                 _context.SaveChanges();
             }
         }
-        
+
     }
 
-    public void ModificarUsuario(Usuario u) // CHEQUEAR SI ESTÁ BIEN
+    public void ModificarUsuario(int id, Usuario u) // CHEQUEAR SI ESTÁ BIEN
     { using (var _context = new RepositorioContext())
         {
-            var usuario = _context.Usuarios.Find(u);
+            var usuario = _context.Usuarios.Find(id);
             if (usuario != null)
             {
                 usuario.Nombre = u.Nombre;
                 usuario.Apellido = u.Apellido;
                 usuario.Email = u.Email;
                 usuario.PasswordHash = u.PasswordHash;
+
+                _context.SaveChanges();
             }
 
          }
-        
     }
 
     public List<Usuario> ListarUsuarios()
@@ -55,8 +63,7 @@ public class RepositorioUsuarioSQL : IRepositorioUsuario
     {
         using (var _context = new RepositorioContext())
         {
-            var EmailExistente = _context.Usuarios.Find(email);
-            return EmailExistente != null;
+             return _context.Usuarios.Any(u => u.Email == email);
         }
     }
     

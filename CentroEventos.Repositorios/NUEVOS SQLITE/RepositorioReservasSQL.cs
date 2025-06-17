@@ -10,7 +10,7 @@ public class RepositorioReservaSQL : IRepositorioReserva
     {
         using (var _context = new RepositorioContext())
         {
-            _context.Add(reserva);
+            _context.Reservas.Add(reserva);
             _context.SaveChanges();
         }
     }
@@ -55,7 +55,8 @@ public class RepositorioReservaSQL : IRepositorioReserva
     public bool ExisteReserva(int id)
       {
         using (var _context = new RepositorioContext()){
-            return (_context.Reservas.Find(id) != null);
+             return _context.Reservas.Any(r => r.Id == id);
+
         }
       }
     

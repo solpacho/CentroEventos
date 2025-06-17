@@ -16,7 +16,7 @@ public class RepositorioPersonaSQL: IRepositorioPersona
 
     public Persona? ObtenerPorId (int id){ 
             using (var _context = new RepositorioContext()){
-            return _context.Personas.Find();
+            return _context.Personas.Find(id);
         }
     }
 
@@ -47,32 +47,21 @@ public class RepositorioPersonaSQL: IRepositorioPersona
         var perExistente = _context.Personas.Find(id);
         if (perExistente != null)
         {
-            _context.Remove(perExistente);
+            _context.Personas.Remove(perExistente);
             _context.SaveChanges();
         }
         }
     }
-    // NO SE USA MÁS?
-
-    public int ObtenerNuevoId (){ //devuelvo el numero id que se le asigna a la proxima persona
-        var lista = ListarPersonas();
-        return lista.Any() ? lista.Max(p => p.Id) + 1 : 1;
-        //expresion lambda, si la lista tiene elementos, busca la persona con mayor id y le sumo 1, 
-        //si es el primer elemento le asigno 1
-    }
-    
 
     public bool DniRepetido(string dni)
     {   using (var _context = new RepositorioContext()){
-            var dniExistente = _context.Personas.Find(dni);
-            return dniExistente != null;
+            return _context.Personas.Any(p => p.DNI == dni);
     }
     }
 
     public bool EmailRepetido(string email){
         using (var _context = new RepositorioContext()){
-            var EmailExistente = _context.Personas.Find(email);
-            return EmailExistente != null;
+            return _context.Personas.Any(p => p.Email == email);
         }
     }
 

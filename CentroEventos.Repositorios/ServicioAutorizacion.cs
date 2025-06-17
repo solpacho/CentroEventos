@@ -4,11 +4,11 @@ using CentroEventos.Repositorios;
 public class ServicioAutorizacionProvisorio : IServicioAutorizacion
 {
 
-    public bool PoseeElPermiso(int idUsuario, Permiso permiso)
+    public bool PoseeElPermiso(int id, Permiso permiso)
     {
         using (var _context = new RepositorioContext())
         {
-            var usuario = _context.Usuarios.Find(idUsuario);
+            var usuario = _context.Usuarios.Find(id);
             return usuario != null && usuario.Permisos.Contains(permiso);
         }
     }
