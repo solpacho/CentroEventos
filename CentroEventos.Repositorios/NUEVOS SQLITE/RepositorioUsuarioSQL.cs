@@ -13,6 +13,35 @@ public class RepositorioUsuarioSQL : IRepositorioUsuario
             _context.SaveChanges();
         }
     }
+    public void EliminarUsuario(int id)
+    { 
+        using (var _context = new RepositorioContext())
+        {
+            var usuario = _context.Usuarios.Find(id);
+            if (usuario != null)
+            {
+                _context.Usuarios.Remove(usuario);
+                _context.SaveChanges();
+            }
+        }
+        
+    }
+
+    public void ModificarUsuario(Usuario u) // CHEQUEAR SI ESTÁ BIEN
+    { using (var _context = new RepositorioContext())
+        {
+            var usuario = _context.Usuarios.Find(u);
+            if (usuario != null)
+            {
+                usuario.Nombre = u.Nombre;
+                usuario.Apellido = u.Apellido;
+                usuario.Email = u.Email;
+                usuario.PasswordHash = u.PasswordHash;
+            }
+
+         }
+        
+    }
 
     public List<Usuario> ListarUsuarios()
     {

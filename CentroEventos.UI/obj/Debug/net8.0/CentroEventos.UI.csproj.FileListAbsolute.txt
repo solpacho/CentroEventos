@@ -31,3 +31,13 @@ C:\Users\Juan Ignacio\projecto\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\r
 C:\Users\Juan Ignacio\projecto\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\CentroEventos.UI.pdb
 C:\Users\Juan Ignacio\projecto\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\CentroEventos.UI.genruntimeconfig.cache
 C:\Users\Juan Ignacio\projecto\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\ref\CentroEventos.UI.dll
+C:\Users\HP\ProyectoNET\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\CentroEventos.UI.csproj.AssemblyReference.cache
+C:\Users\HP\ProyectoNET\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\CentroEventos.UI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\ProyectoNET\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\CentroEventos.UI.AssemblyInfoInputs.cache
+C:\Users\HP\ProyectoNET\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\CentroEventos.UI.AssemblyInfo.cs
+C:\Users\HP\ProyectoNET\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\CentroEventos.UI.csproj.CoreCompileInputs.cache
+C:\Users\HP\ProyectoNET\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\CentroEventos.UI.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\HP\ProyectoNET\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\CentroEventos.UI.sourcelink.json
+C:\Users\HP\ProyectoNET\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\CentroEventos.UI.dll
+C:\Users\HP\ProyectoNET\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\refint\CentroEventos.UI.dll
+C:\Users\HP\ProyectoNET\CentroEventos\CentroEventos.UI\obj\Debug\net8.0\CentroEventos.UI.pdb
