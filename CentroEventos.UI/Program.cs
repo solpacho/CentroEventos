@@ -1,7 +1,7 @@
 using CentroEventos.UI.Components;
 using CentroEventos.Aplicacion;
 using CentroEventos.Repositorios;
-using CentroEventos.Infraestructura;
+using CentroEventos.UI;
 
 var builder = WebApplication.CreateBuilder(args);
 
