@@ -1,0 +1,83 @@
+﻿@inherits LayoutComponentBase
+@inject SesionUsuario Sesion
+@inject NavigationManager Navigation
+@implements IDisposable
+<PageTitle>CentroEventos</PageTitle>
+
+<!-- Navbar superior -->
+<header class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+    <a class="navbar-brand" href="/">Centro de Eventos</a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            @if (!Sesion.EstaLogueado)
+            {
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="Login">Inicia sesión</NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="Registro">Registrate</NavLink>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="/">Inicio</NavLink>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="" @onclick="CerrarSesion">Cerrar sesión</a>
+                </li>
+            }
+        </ul>
+    </div>
+</header>
+@code {
+    protected override void OnInitialized()
+    {
+        Sesion.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        Sesion.OnChange -= StateHasChanged;
+    }
+    private void CerrarSesion()
+    {
+        Sesion.CerrarSesion();
+        Navigation.NavigateTo("Login");
+    }
+}
+
+<!-- Contenido principal de cada página -->
+<main class="container mt-4">
+    @Body
+</main>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+<!--
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+-->
