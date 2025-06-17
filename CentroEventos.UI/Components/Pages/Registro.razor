@@ -1,0 +1,43 @@
+@page "/Registro"
+
+<h3>Registro de nuevo usuario</h3>
+    
+
+    <EditForm Model="@nuevoUsuario" OnValidSubmit="Registrarse">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label>Nombre:</label>
+        <InputText class="form-control" @bind-Value="nuevoUsuario.Nombre" />
+    </div>
+
+    <div class="mb-3">
+        <label>Apellido:</label>
+        <InputText class="form-control" @bind-Value="nuevoUsuario.Apellido" />
+    </div>
+
+    <div class="mb-3">
+        <label>Email:</label>
+        <InputText class="form-control" @bind-Value="nuevoUsuario.Email" />
+    </div>
+
+    <div class="mb-3">
+        <label>Contraseña:</label>
+        <InputText class="form-control" type="password" @bind-Value="password" />
+    </div>
+
+    <button class="btn btn-success" type="submit">Registrarse</button>
+</EditForm>
+
+@code {
+    private Usuario nuevoUsuario = new();
+    private string password;
+
+    private void Registrarse()
+    {
+        //UsuarioAltaUseCase.Ejecutar(nuevoUsuario);
+        Console.WriteLine($"Usuario registrado: {nuevoUsuario.Email}");
+    }
+
+}

@@ -1,0 +1,27 @@
+@page "/Inicio"
+@inject NavigationManager Navigation
+@inject SesionUsuario Sesion
+@implements IDisposable
+
+
+    <h3>Bienvenido mati</h3>
+    <p>Esta es la página principal luego de iniciar sesión.</p>
+
+    <button class="btn btn-danger" @onclick="CerrarSesion">Cerrar sesión</button>
+
+@code {
+    protected override void OnInitialized()
+    {
+        Sesion.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        Sesion.OnChange -= StateHasChanged;
+    }
+    private void CerrarSesion()
+    {
+        Sesion.CerrarSesion();
+        Navigation.NavigateTo("/Login");
+    }
+}
