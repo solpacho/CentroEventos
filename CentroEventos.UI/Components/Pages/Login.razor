@@ -3,41 +3,44 @@
 @inject SesionUsuario Sesion
 <h3>Iniciar sesión</h3>
 
-<EditForm Model="modeloLogin" OnValidSubmit="IniciarSesion" FormName="aaaaa">
+<EditForm Model="@modelo" OnValidSubmit="IniciarSesion">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="mb-3">
         <label>Email:</label>
-        <InputText class="form-control" @bind-Value="email" />
+        <InputText class="form-control" @bind-Value="modelo.Email" />
     </div>
 
     <div class="mb-3">
         <label>Contraseña:</label>
-        <InputText class="form-control" type="password" @bind-Value="password" />
+        <InputText class="form-control" type="password" @bind-Value="modelo.Contrasenia" />
     </div>
 
     <button class="btn btn-primary" type="submit">Ingresar</button>
 </EditForm>
+@if (!string.IsNullOrEmpty(mensaje))
+{
+    <div class="alert alert-success">@mensaje</div>
+}
 
 @code {
-    private LoginModel modeloLogin = new();
-    private string email;
-    private string password;
+    private LoginModel modelo = new();
+    private string mensaje = "";
 
     private void IniciarSesion()
     {
-        // simulo que el login siempre es válido
-        Sesion.IniciarSesion(email);
+        try{
+        Sesion.IniciarSesion(modelo.Email, modelo.Contrasenia);
+        mensaje = "Bienvenido. Redirigiendo...";
 
         // redirijo al inicio del sistema
         Navigation.NavigateTo("/Inicio");
-    }
-    private class LoginModel
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
-}
 
+        }catch (Exception ex){
+            mensaje = $"Error al registrar: {ex.Message}";
+        }
+    }
+    
+}
 
