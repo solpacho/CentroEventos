@@ -10,11 +10,13 @@
     <div class="mb-3">
         <label>Email:</label>
         <InputText class="form-control" @bind-Value="modelo.Email" />
+        <ValidationMessage For="@(() => modelo.Email)" />
     </div>
 
     <div class="mb-3">
         <label>Contraseña:</label>
         <InputText class="form-control" type="password" @bind-Value="modelo.Contrasenia" />
+        <ValidationMessage For="@(() => modelo.Contrasenia)" />
     </div>
 
     <button class="btn btn-primary" type="submit">Ingresar</button>
