@@ -10,7 +10,7 @@ public class UsuarioBajaUseCase(IRepositorioUsuario repou, IServicioAutorizacion
         // 1. Verificación de existencia de usuario
         if (!repou.ExisteUsuario(id) || (!repou.ExisteUsuario(idEliminar)))
         {
-            throw new Exception("No existe usuario");
+            throw new EntidadNotFoundException("No existe usuario");
         }
         // 2. Validación de datos del usuario
         if (!servicio.PoseeElPermiso(id, Permiso.UsuarioBaja))
