@@ -8,6 +8,6 @@ public class ListarUsuariosUseCase(IRepositorioUsuario _repoUsuarios, IServicioA
         if (idSolicitante != 1 && !_servicioAutorizacion.PoseeElPermiso(idSolicitante, Permiso.UsuarioModificacion))
             throw new FalloAutorizacionException("No tiene permisos para listar usuarios.");
 
-        return _repoUsuarios.Listar();
+        return _repoUsuarios.ListarUsuaios();
     }
 }
