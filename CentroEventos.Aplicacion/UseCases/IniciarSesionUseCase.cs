@@ -16,11 +16,11 @@ public class IniciarSesionUseCase
     {
         var usuario = _repoUsuarios.ObtenerPorCorreo(correo);
         if (usuario == null)
-            throw new Exception("Correo no encontrado.");
+            throw new CorreoIncorrectoException("Correo no encontrado.");
 
         var hash = _servicioHash.Hash(contrasena);
         if (usuario.PasswordHash != hash)
-            throw new Exception("Contraseña incorrecta.");
+            throw new ContrasenaIncorrectaException("Contraseña incorrecta.");
 
         return usuario;
     }
