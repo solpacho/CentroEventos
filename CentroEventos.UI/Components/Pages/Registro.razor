@@ -25,34 +25,34 @@
 
     <div class="mb-3">
         <label>Contraseña:</label>
-        <InputText class="form-control" type="password" @bind-Value="modelo.PasswordPlano" />
+        <InputText class="form-control" type="password" @bind-Value="modelo.Contrasenia" />
     </div>
 
     <button class="btn btn-primary" type="submit">Registrarse</button>
 </EditForm>
 
-@if (!string.IsNullOrEmpty(mensajeExito))
+@if (!string.IsNullOrEmpty(mensaje))
 {
-    <div class="alert alert-success">@mensajeExito</div>
+    <div class="alert alert-success">@mensaje</div>
 }
 
 @code {
     private RegistroUsuarioModel modelo = new();
-    private string mensajeExito = "";
+    private string mensaje = "";
 
     private void Registrarse()
     {
         try
         {
-            var u = new Usuario(modelo.Nombre, modelo.Apellido, modelo.Email);
-            AltaUsuario.Ejecutar(u, modelo.PasswordPlano);
+            var nuevoUsuario = new Usuario(modelo.Nombre, modelo.Apellido, modelo.Email);
+            AltaUsuario.Ejecutar(nuevoUsuario, modelo.Contrasenia);
 
-            mensajeExito = "Usuario registrado con éxito. Redirigiendo...";
+            mensaje = "Usuario registrado con éxito. Redirigiendo...";
             Navigation.NavigateTo("/Login");
         }
         catch (Exception ex)
         {
-            mensajeExito = $"Error al registrar: {ex.Message}";
+            mensaje = $"Error al registrar: {ex.Message}";
         }
     }
 }
