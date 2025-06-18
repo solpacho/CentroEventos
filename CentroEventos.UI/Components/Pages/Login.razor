@@ -1,48 +1,52 @@
 @page "/Login"
+@rendermode InteractiveServer
 @inject NavigationManager Navigation
 @inject SesionUsuario Sesion
+
 <h3>Iniciar sesión</h3>
 
-<EditForm Model="@modelo" OnValidSubmit="IniciarSesion">
+<EditForm Model="@modelo" OnValidSubmit="IniciarSesion" FormName="LoginForm" Enhance>
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="mb-3">
-        <label>Email:</label>
-        <InputText class="form-control" @bind-Value="modelo.Email" />
+        <label for="email">Email:</label>
+        <InputText id="email" name="modelo.Email" class="form-control" @bind-Value="modelo.Email" />
         <ValidationMessage For="@(() => modelo.Email)" />
     </div>
 
     <div class="mb-3">
-        <label>Contraseña:</label>
-        <InputText class="form-control" type="password" @bind-Value="modelo.Contrasenia" />
+        <label for="contrasenia">Contraseña:</label>
+        <InputText id="contrasenia" name="modelo.Contrasenia" class="form-control" type="password" @bind-Value="modelo.Contrasenia" />
         <ValidationMessage For="@(() => modelo.Contrasenia)" />
     </div>
 
-    <button class="btn btn-primary" type="submit">Ingresar</button>
+    <button class="btn btn-primary" type="submit">Iniciar Sesión</button>
 </EditForm>
+
 @if (!string.IsNullOrEmpty(mensaje))
 {
-    <div class="alert alert-success">@mensaje</div>
+    <div class="alert alert-danger">@mensaje</div>
 }
 
 @code {
-    private LoginModel modelo = new();
+    [SupplyParameterFromForm]
+    private LoginModel modelo { get; set; } = new();
+    
     private string mensaje = "";
 
     private void IniciarSesion()
     {
-        try{
-        Sesion.IniciarSesion(modelo.Email, modelo.Contrasenia);
-        mensaje = "Bienvenido. Redirigiendo...";
-
-        // redirijo al inicio del sistema
-        Navigation.NavigateTo("/Inicio");
-
-        }catch (Exception ex){
-            mensaje = $"Error al registrar: {ex.Message}";
+        try
+        {
+            Sesion.IniciarSesion(modelo.Email!, modelo.Contrasenia!);
+            mensaje = "Bienvenido. Redirigiendo...";
+            Navigation.NavigateTo("/Inicio");
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al iniciar sesión: {ex.Message}";
         }
     }
-    
 }
 
