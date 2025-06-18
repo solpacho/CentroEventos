@@ -1,0 +1,64 @@
+@page "/eventos"
+@inject ListarEventosUseCase ObtenerEventosUseCase
+@inject ListarEventosConCupoDisponibleUseCase ObtenerEventosConCupoUseCase
+
+<h3>Eventos</h3>
+
+@if (eventos is null)
+{
+    <p>Cargando eventos...</p>
+}
+else if (!eventos.Any())
+{
+    <p>No hay eventos disponibles.</p>
+}
+else
+{
+    <h4>Todos los eventos:</h4>
+    @foreach (var evento in eventos)
+    {
+        <div class="card mb-3 p-3 border">
+            <h4>@evento.Nombre</h4>
+            <p><strong>Descripción:</strong> @evento.Descripcion</p>
+            <p><strong>Fecha y hora de inicio:</strong> @evento.FechaHoraInicio.ToString("dd/MM/yyyy HH:mm")</p>
+            <p><strong>Duración:</strong> @evento.DuracionHoras hora(s)</p>
+            <p><strong>Cupo máximo:</strong> @evento.CupoMaximo personas</p>
+            <p><strong>ID del responsable:</strong> @evento.ResponsableId</p>
+        </div>
+    }
+
+    <h3>Eventos con cupo disponible</h3>
+    @if (eventosConCupo is null)
+    {
+        <p>Cargando eventos con cupo...</p>
+    }
+    else if (!eventosConCupo.Any())
+    {
+        <p>No hay eventos con cupo disponible.</p>
+    }
+    else
+    {
+        @foreach (var evento in eventosConCupo)
+        {
+            <div class="card mb-3 p-3 border">
+                <h4>@evento.Nombre</h4>
+                <p><strong>Descripción:</strong> @evento.Descripcion</p>
+                <p><strong>Fecha y hora de inicio:</strong> @evento.FechaHoraInicio.ToString("dd/MM/yyyy HH:mm")</p>
+                <p><strong>Duración:</strong> @evento.DuracionHoras hora(s)</p>
+                <p><strong>Cupo máximo:</strong> @evento.CupoMaximo personas</p>
+                <p><strong>ID del responsable:</strong> @evento.ResponsableId</p>
+            </div>
+        }
+    }
+}
+
+@code {
+    private List<EventoDeportivo>? eventos;
+    private List<EventoDeportivo>? eventosConCupo;
+
+    protected override void OnInitialized()
+    {
+        eventos = ObtenerEventosUseCase.Ejecutar();
+        eventosConCupo = ObtenerEventosConCupoUseCase.Ejecutar();
+    }
+}
