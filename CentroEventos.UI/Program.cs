@@ -13,6 +13,7 @@ builder.Services.AddScoped<UsuarioAltaUseCase>();
 builder.Services.AddScoped<HashHelperUseCase>();
 builder.Services.AddScoped<IHashService, HashService>();
 builder.Services.AddScoped<ValidadorUsuario>();
+builder.Services.AddScoped<IServicioAutorizacion, ServicioAutorizacionProvisorio>();
 builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuarioSQL>();
 builder.Services.AddScoped<IniciarSesionUseCase>();
 builder.Services.AddScoped<SesionUsuario>();
