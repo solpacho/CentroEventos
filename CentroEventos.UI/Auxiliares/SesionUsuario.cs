@@ -1,28 +1,24 @@
-// Servicios/SesionUsuario.cs
-namespace CentroEventos.UI;
+using CentroEventos.Aplicacion;
+
 public class SesionUsuario
 {
-    public bool EstaLogueado { get; private set; } = false;
-    public string Email { get; private set; }
+    public Usuario? Usuario { get; private set; }
 
-    public event Action OnChange;
+    public event Action? OnChange;
 
-    public void IniciarSesion(string email)
+    public bool EstaLogueado => Usuario != null;
+
+    public void IniciarSesion(Usuario u)
     {
-        Email = email;
-        EstaLogueado = true;
-        NotificarCambio();
+        Usuario = u;
+        OnChange?.Invoke();
     }
 
     public void CerrarSesion()
     {
-        Email = null;
-        EstaLogueado = false;
-        NotificarCambio();
-    }
-
-    private void NotificarCambio()
-    {
+        Usuario = null;
         OnChange?.Invoke();
     }
+
+    public string Email => Usuario?.Email ?? "";
 }
