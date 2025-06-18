@@ -1,0 +1,35 @@
+@page "/reservas"
+@inject ListarReservasUseCase ObtenerReservasUseCase
+
+<h3>Reservas</h3>
+
+@if (reservas is null)
+{
+    <p>Cargando reservas...</p>
+}
+else if (!reservas.Any())
+{
+    <p>No hay reservas disponibles.</p>
+}
+else
+{
+    @foreach (var reserva in reservas)
+    {
+        <div class="card mb-3 p-3 border">
+            <p><strong>ID Reserva:</strong> @reserva.Id</p>
+            <p><strong>ID Persona:</strong> @reserva.PersonaId</p>
+            <p><strong>ID Evento Deportivo:</strong> @reserva.EventoDeportivoId</p>
+            <p><strong>Fecha de alta:</strong> @reserva.FechaAltaReserva.ToString("dd/MM/yyyy HH:mm")</p>
+            <p><strong>Estado:</strong> @reserva.Estado.ToString()</p>
+        </div>
+    }
+}
+
+@code {
+    private List<Reserva>? reservas;
+
+    protected override void OnInitialized()
+    {
+        reservas = ObtenerReservasUseCase.Ejecutar();
+    }
+}
