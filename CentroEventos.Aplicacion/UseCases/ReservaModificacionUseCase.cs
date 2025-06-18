@@ -11,7 +11,7 @@ public class ReservaModificacionUseCase(IRepositorioReserva repositorio, IServic
         }
 
         if (!repositorio.ExisteReserva(reserva.Id)){
-            throw new Exception("No se ha encontrado la reserva \n");
+            throw new EntidadNotFoundException("No se ha encontrado la reserva \n");
         }
  
         repositorio.Modificar(reserva);
