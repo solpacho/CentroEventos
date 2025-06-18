@@ -50,13 +50,7 @@ public class RepositorioUsuarioSQL : IRepositorioUsuario
         }
 
     }
-    public List<Usuario> Listar()
-    {
-         using (var _context = new RepositorioContext())
-        {
-            return _context.Usuarios.ToList();
-        }
-    }
+
     public void ModificarUsuario(int id, Usuario u) // CHEQUEAR SI ESTÁ BIEN
     {
          using (var _context = new RepositorioContext())
