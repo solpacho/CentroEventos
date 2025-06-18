@@ -1,4 +1,4 @@
-
+using CentroEventos.Aplicacion.Excepciones;
 using CentroEventos.Aplicacion;
 
 public class IniciarSesionUseCase
