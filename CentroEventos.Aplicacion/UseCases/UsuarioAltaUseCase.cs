@@ -5,18 +5,8 @@ namespace CentroEventos.Aplicacion;
 // falta agregar AUTORIZACIÓN para poder dar alta usuario
 public class UsuarioAltaUseCase(IRepositorioUsuario repou, ValidadorUsuario validador, IServicioAutorizacion autorizacion, HashHelperUseCase hashHelper)
 {
-    public void Ejecutar(int id, Usuario u, string passwordPlano)
-    {   // si tiene autorización para dar de alta usuarios
-        // 1. Verificación de existencia de usuario
-        if (!repou.ExisteUsuario(id))
-        {
-            throw new Exception("No existe usuario");
-        }
-        if (!autorizacion.PoseeElPermiso(id, Permiso.UsuarioAlta))
-        {
-            throw new FalloAutorizacionException("No tiene permiso para dar de alta usuarios.");
-        }
-
+    public void Ejecutar(Usuario u, string passwordPlano)
+    {   
         // 1. Validación de datos del usuario
         if (!validador.Validar(u, out string mensajeError))
         {
