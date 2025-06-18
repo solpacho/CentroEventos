@@ -3,24 +3,37 @@
 @inject SesionUsuario Sesion
 @implements IDisposable
 
-@if (!Sesion.EstaAutenticado)
+<h3>Bienvenido, @Sesion.Usuario?.Nombre</h3>
+
+@if (Sesion.Usuario is null)
 {
-    <p>Redirigiendo...</p>
+    <p>No hay sesión iniciada.</p>
 }
 else
 {
-    <h3>Bienvenido @Sesion.UsuarioActual.Nombre</h3>
-    <p>Esta es la página principal luego de iniciar sesión.</p>
-    <button class="btn btn-danger" @onclick="CerrarSesion">Cerrar sesión</button>
+    <ul class="nav nav-tabs">
+    <li class="nav-item">
+        <NavLink class="nav-link" href="/MisDatos">Datos personales</NavLink>
+    </li>
+    <li class="nav-item">
+        <NavLink class="nav-link" href="/Reservas">Reservas</NavLink>
+    </li>
+    <li class="nav-item">
+        <NavLink class="nav-link" href="/Personas">Personas</NavLink>
+    </li>
+    <li class="nav-item">
+        <NavLink class="nav-link" href="/Eventos">Eventos</NavLink>
+    </li>
+</ul>
+
 }
+
+<button class="btn btn-danger mt-3" @onclick="CerrarSesion">Cerrar sesión</button>
 
 @code {
     protected override void OnInitialized()
     {
         Sesion.OnChange += StateHasChanged;
-
-        if (!Sesion.EstaAutenticado)
-            Navigation.NavigateTo("/Login");
     }
 
     public void Dispose()
