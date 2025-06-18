@@ -2,7 +2,7 @@
 
 namespace CentroEventos.Aplicacion;
 
-public class PersonaBajaUseCase(IRepositorioPersona repositorioP, IServicioAutorizacion autorizacion, IRepositorioEvento repositorioEV, IRepositorioReserva repositorioR, ValidadorPersona validador)
+public class PersonaBajaUseCase(IRepositorioPersona repositorioP, IServicioAutorizacion autorizacion, IRepositorioEvento repositorioEV, IRepositorioReserva repositorioR)
 {
     public void Ejecutar(int idPersona, int idUsuario)
     {
