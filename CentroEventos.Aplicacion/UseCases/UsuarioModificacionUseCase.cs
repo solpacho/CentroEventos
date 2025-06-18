@@ -9,7 +9,7 @@ public class UsuarioModificacionUseCase(IRepositorioUsuario repou, IServicioAuto
         // 1. Verificación de existencia de usuario
         if (!repou.ExisteUsuario(id) || (!repou.ExisteUsuario(idModificar)))
         {
-            throw new Exception("No existe usuario");
+            throw new EntidadNotFoundException("No existe usuario");
         }
         // 2. Verificación de permisos
         if (!servicio.PoseeElPermiso(id, Permiso.UsuarioModificacion))
