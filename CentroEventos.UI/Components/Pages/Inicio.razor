@@ -24,6 +24,12 @@ else
     <li class="nav-item">
         <NavLink class="nav-link" href="/Eventos">Eventos</NavLink>
     </li>
+    @if (Sesion.Usuario.Id == 1)
+        {
+            <li class="nav-item">
+                <NavLink class="nav-link" href="/Gestion">Gestion</NavLink>
+            </li>
+        }
 </ul>
 
 }
