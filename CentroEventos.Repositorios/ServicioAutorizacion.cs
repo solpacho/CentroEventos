@@ -1,6 +1,5 @@
-namespace CentroEventos.Aplicacion;
-
-using CentroEventos.Repositorios;
+using CentroEventos.Aplicacion;
+namespace CentroEventos.Repositorios;
 public class ServicioAutorizacionProvisorio : IServicioAutorizacion
 {
 
