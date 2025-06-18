@@ -15,7 +15,7 @@ builder.Services.AddScoped<IHashService, HashService>();
 builder.Services.AddScoped<ValidadorUsuario>();
 builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuarioSQL>();
 builder.Services.AddScoped<IniciarSesionUseCase>();
-builder.Services.AddSingleton<SesionUsuario>();
+builder.Services.AddScoped<SesionUsuario>();
 
 var app = builder.Build();
 
