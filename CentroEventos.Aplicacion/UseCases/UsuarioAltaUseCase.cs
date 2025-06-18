@@ -3,7 +3,7 @@ using CentroEventos.Aplicacion;
 namespace CentroEventos.Aplicacion;
 
 // falta agregar AUTORIZACIÓN para poder dar alta usuario
-public class UsuarioAltaUseCase(IRepositorioUsuario repou, ValidadorUsuario validador, IServicioAutorizacion autorizacion, HashHelperUseCase hashHelper)
+public class UsuarioAltaUseCase(IRepositorioUsuario repou, ValidadorUsuario validador, HashHelperUseCase hashHelper)
 {
     public void Ejecutar(Usuario u, string passwordPlano)
     {   
