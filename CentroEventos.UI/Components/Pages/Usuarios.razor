@@ -1,0 +1,57 @@
+@page "/Usuarios"
+@inject SesionUsuario Sesion
+@inject ListarUsuariosUseCase UsuariosUseCase
+@inject NavigationManager Navigation 
+
+<h3> Usuarios: </h3>
+@if (!string.IsNullOrEmpty(error))
+{
+    <div class="alert alert-danger">@error</div>
+}
+else if (usuarios is null){
+    <p>Cargando usuarios</p>
+}
+else if (!usuarios.Any())
+{
+    <p>No hay usuarios definidos.</p>
+}
+else
+{
+    @foreach (var u in usuarios)
+    {
+        <div class="card mb-3 p-3 border">
+            <p><strong>ID:</strong> @u.Id</p>
+            <p><strong>Nombre y apellido:</strong> @u.Nombre @u.Apellido</p>
+            <p><strong>Email:</strong> @u.Email</p>
+            <p><strong>Permisos:</strong> @string.Join(", ", u.Permisos)</p>
+        </div>
+    }
+}
+
+
+@code {
+    private List<Usuario>? usuarios;
+    private string error = "";
+    protected override void OnInitialized()
+    {
+        // 1) Extraigo el objeto Usuario
+        var usr = Sesion.Usuario;
+        if (usr is null)
+        {
+            Navigation.NavigateTo("/Login");
+            return;
+        }
+
+        try
+        {
+        // 2) Uso directamente usr.Id (int no-nullable)
+            usuarios = UsuariosUseCase.Ejecutar(usr.Id);
+        }
+        catch (FalloAutorizacionException ex)
+        {
+            error = ex.Message;
+        }
+    }
+}
+
+
