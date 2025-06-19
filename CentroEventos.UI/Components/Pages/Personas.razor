@@ -1,6 +1,28 @@
 @page "/Personas"
-@inject ListarResponsablesUseCase UseCase
+@inject ListarResponsablesUseCase ResponsablesUseCase
+@inject ListarPersonaUseCase PersonasUseCase
 
+<h3> Personas: </h3>
+@if (personas is null){
+    <p>Cargando personas</p>
+}
+else if (!personas.Any())
+{
+    <p>No hay responsables definidos.</p>
+}
+else
+{
+    @foreach (var p in personas)
+    {
+        <div class="card mb-3 p-3 border">
+            <p><strong>ID:</strong> @p.Id</p>
+            <p><strong>Nombre y apellido:</strong> @p.Nombre @p.Apellido</p>
+            <p><strong>DNI:</strong> @p.DNI</p>
+            <p><strong>Email:</strong> @p.Email</p>
+            <p><strong>Teléfono:</strong> @p.Telefono</p>
+        </div>
+    }
+}
 <h3>Personas responsables de eventos</h3>
 
 @if (responsables is null)
@@ -13,23 +35,28 @@ else if (!responsables.Any())
 }
 else
 {
-    @foreach (var p in responsables)
+    @foreach (var r in responsables)
     {
         <div class="card mb-3 p-3 border">
-            <p><strong>ID:</strong> @p.Id</p>
-            <p><strong>Nombre:</strong> @p.Nombre @p.Apellido</p>
-            <p><strong>DNI:</strong> @p.DNI</p>
-            <p><strong>Email:</strong> @p.Email</p>
-            <p><strong>Teléfono:</strong> @p.Telefono</p>
+            <p><strong>ID:</strong> @r.Id</p>
+            <p><strong>Nombre:</strong> @r.Nombre @r.Apellido</p>
+            <p><strong>DNI:</strong> @r.DNI</p>
+            <p><strong>Email:</strong> @r.Email</p>
+            <p><strong>Teléfono:</strong> @r.Telefono</p>
         </div>
     }
 }
 
 @code {
+    private List<Persona>? personas;
     private List<Persona>? responsables;
 
     protected override void OnInitialized()
     {
-        responsables = UseCase.Ejecutar();
+        // Carga las personas completas
+        personas    = PersonasUseCase.Ejecutar();
+
+        // Carga sólo los responsables de eventos
+        responsables = ResponsablesUseCase.Ejecutar();
     }
 }
