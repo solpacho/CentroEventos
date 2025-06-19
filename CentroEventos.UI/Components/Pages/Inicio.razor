@@ -1,6 +1,7 @@
 @page "/Inicio"
 @inject NavigationManager Navigation
 @inject SesionUsuario Sesion
+@rendermode InteractiveServer
 @implements IDisposable
 
 <h3>Bienvenido, @Sesion.Usuario?.Nombre</h3>
