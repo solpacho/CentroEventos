@@ -23,12 +23,6 @@ namespace CentroEventos.Repositorios
         public DbSet<Usuario> Usuarios { get; set; }
         #nullable restore
 
-        // CONSTRUCTOR que asegura la creación de la base y las tablas
-        public RepositorioContext()
-        {
-            Database.EnsureCreated();
-        }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=RepositorioProyecto.sqlite");
