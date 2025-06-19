@@ -1,9 +1,20 @@
 @page "/MisDatos"
 @inject SesionUsuario Sesion
 @inject UsuarioModificacionUseCase ModificarUsuario
+@inject NavigationManager Navigation
 @rendermode InteractiveServer
 
 <h3>Mis Datos</h3>
+
+@if (!string.IsNullOrWhiteSpace(mensajeError))
+{
+    <div class="alert alert-danger">@mensajeError</div>
+}
+
+@if (!string.IsNullOrWhiteSpace(mensajeExito))
+{
+    <div class="alert alert-success">@mensajeExito</div>
+}
 
 @if (usuario is null)
 {
@@ -16,7 +27,7 @@ else if (!modoEdicion)
         <p><strong>Apellido:</strong> @usuario.Apellido</p>
         <p><strong>Email:</strong> @usuario.Email</p>
 
-        <button class="btn btn-primary mt-3" @onclick="() => modoEdicion = true">Modificar Datos</button>
+        <button class="btn btn-primary mt-3" @onclick="IniciarEdicion">Modificar Datos</button>
     </div>
 }
 else
@@ -49,11 +60,17 @@ else
     private Usuario? usuario;
     private Usuario? usuarioEditado;
     private bool modoEdicion = false;
+    private string mensajeError = "";
+    private string mensajeExito = "";
 
     protected override void OnInitialized()
     {
         usuario = Sesion.Usuario;
+        CrearUsuarioEditado();
+    }
 
+    private void CrearUsuarioEditado()
+    {
         if (usuario is not null)
         {
             usuarioEditado = new Usuario
@@ -68,18 +85,65 @@ else
         }
     }
 
+    private void IniciarEdicion()
+    {
+        modoEdicion = true;
+        mensajeError = "";
+        mensajeExito = "";
+        CrearUsuarioEditado(); // Recrear el objeto editado con los datos actuales
+    }
+
     private void CancelarEdicion()
     {
         modoEdicion = false;
+        mensajeError = "";
+        mensajeExito = "";
+        CrearUsuarioEditado(); // Restaurar los datos originales
     }
 
     private void GuardarCambios()
     {
-        if (usuario is not null && usuarioEditado is not null)
+        mensajeError = "";
+        mensajeExito = "";
+
+        try
         {
+            if (usuario is null || usuarioEditado is null)
+            {
+                mensajeError = "Error: No se pudo obtener la información del usuario.";
+                return;
+            }
+
+            // Ejecutar la modificación
             ModificarUsuario.Ejecutar(usuario.Id, usuario.Id, usuarioEditado);
+
+            // Actualizar la sesión con los nuevos datos
+            Sesion.ActualizarUsuario(usuarioEditado);
+            
+            // Actualizar la variable local
             usuario = usuarioEditado;
+            
+            // Salir del modo edición
             modoEdicion = false;
+            
+            // Mostrar mensaje de éxito
+            mensajeExito = "Datos actualizados correctamente.";
+        }
+        catch (FalloAutorizacionException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        catch (EntidadNotFoundException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        catch (ValidacionException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            mensajeError = "Error inesperado: " + ex.Message;
         }
     }
 }
