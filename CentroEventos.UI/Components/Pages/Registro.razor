@@ -1,10 +1,11 @@
 @page "/Registro"
+@using System.ComponentModel.DataAnnotations
 @inject UsuarioAltaUseCase AltaUsuario
 @inject NavigationManager Navigation
 
 <h3>Registro de nuevo usuario</h3>
 
-<EditForm Model="@modelo" OnValidSubmit="Registrarse" >
+<EditForm Model="@modelo" OnValidSubmit="Registrarse" FormName="RegistroForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -28,31 +29,40 @@
         <InputText class="form-control" type="password" @bind-Value="modelo.Contrasenia" />
     </div>
 
-    <button class="btn btn-primary" type="submit">Registrarse</button>
+   <button class="btn btn-primary" type="submit">Registrarse</button>
 </EditForm>
 
 @if (!string.IsNullOrEmpty(mensaje))
-{
-    <div class="alert alert-success">@mensaje</div>
-}
+
+    {<div class="alert @(exito ? "alert-success" : "alert-danger")">@mensaje</div>}
+
 
 @code {
     private RegistroUsuarioModel modelo = new();
     private string mensaje = "";
+    private bool exito = false;
 
     private void Registrarse()
     {
+        mensaje = "";
+        exito = false;
+
         try
         {
-            var nuevoUsuario = new Usuario(modelo.Nombre, modelo.Apellido, modelo.Email);
-            AltaUsuario.Ejecutar(nuevoUsuario, modelo.Contrasenia);
-
+            var nuevoUsuario = new Usuario(modelo.Nombre ?? "", modelo.Apellido ?? "", modelo.Email ?? "");
+            AltaUsuario.Ejecutar(nuevoUsuario, modelo.Contrasenia ?? "");
+            exito = true;
             mensaje = "Usuario registrado con éxito. Redirigiendo...";
+            // Espera breve antes de redirigir (opcional)
             Navigation.NavigateTo("/Login");
+        }
+        catch (ValidationException vex)
+        {
+            mensaje = $"Error de validación: {vex.Message}";
         }
         catch (Exception ex)
         {
             mensaje = $"Error al registrar: {ex.Message}";
         }
     }
-}
+    }
