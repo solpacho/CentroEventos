@@ -1,35 +1,63 @@
 @page "/reservas"
 @inject ListarReservasUseCase ObtenerReservasUseCase
+@inject SesionUsuario Sesion
+@inject IServicioAutorizacion ServicioAutorizacion
 
 <h3>Reservas</h3>
 
-@if (reservas is null)
+@if (usuario is null)
+{
+    <p>Debés iniciar sesión para ver las reservas.</p>
+}
+else if (reservas is null)
 {
     <p>Cargando reservas...</p>
 }
-else if (!reservas.Any())
-{
-    <p>No hay reservas disponibles.</p>
-}
 else
 {
-    @foreach (var reserva in reservas)
+    if (tienePermisoReservaAlta)
+    {
+        <button class="btn btn-success mb-3">Nueva Reserva</button>
+    }
+
+    foreach (var reserva in reservas)
     {
         <div class="card mb-3 p-3 border">
-            <p><strong>ID Reserva:</strong> @reserva.Id</p>
-            <p><strong>ID Persona:</strong> @reserva.PersonaId</p>
-            <p><strong>ID Evento Deportivo:</strong> @reserva.EventoDeportivoId</p>
-            <p><strong>Fecha de alta:</strong> @reserva.FechaAltaReserva.ToString("dd/MM/yyyy HH:mm")</p>
-            <p><strong>Estado:</strong> @reserva.Estado.ToString()</p>
+            <p><strong>ID del Evento:</strong> @reserva.EventoDeportivoId</p>
+            <p><strong>ID del Usuario:</strong> @reserva.PersonaId</p>
+            <p><strong>Fecha de Reserva:</strong> @reserva.FechaAltaReserva.ToString("dd/MM/yyyy")</p>
+
+            @if (tienePermisoReservaModificacion)
+            {
+                <button class="btn btn-primary me-2">Modificar</button>
+            }
+            @if (tienePermisoReservaBaja)
+            {
+                <button class="btn btn-danger">Eliminar</button>
+            }
         </div>
     }
 }
 
 @code {
     private List<Reserva>? reservas;
+    private Usuario? usuario;
+
+    private bool tienePermisoReservaAlta;
+    private bool tienePermisoReservaBaja;
+    private bool tienePermisoReservaModificacion;
 
     protected override void OnInitialized()
     {
+        usuario = Sesion.Usuario;
+
+        if (usuario is null)
+            return;
+
         reservas = ObtenerReservasUseCase.Ejecutar();
+
+        tienePermisoReservaAlta = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.ReservaAlta);
+        tienePermisoReservaBaja = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.ReservaBaja);
+        tienePermisoReservaModificacion = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.ReservaModificacion);
     }
 }
