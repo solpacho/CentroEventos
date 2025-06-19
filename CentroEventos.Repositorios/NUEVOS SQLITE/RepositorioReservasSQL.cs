@@ -70,6 +70,13 @@ public class RepositorioReservaSQL : IRepositorioReserva
             );
         }
     }
+    public bool TieneReservasEvento(int idEvento)
+    {
+        using (var _context = new RepositorioContext())
+        {
+            return _context.Reservas.Any(r => r.EventoDeportivoId == idEvento);
+        }
+    }
 
     public int CantidadReservasEvento(int eventoId)
     {
