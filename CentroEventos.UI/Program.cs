@@ -19,7 +19,7 @@ builder.Services.AddScoped<IniciarSesionUseCase>();
 builder.Services.AddScoped<SesionUsuario>();
 
 var app = builder.Build();
-
+RepositorioSqlite.Inicializar();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
