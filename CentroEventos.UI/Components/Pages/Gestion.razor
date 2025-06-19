@@ -1,1 +1,103 @@
+@page "/Gestion"
+@inject NavigationManager Navigation
+@inject SesionUsuario Sesion
+@inject DarPermisoUseCase DarPermiso
+
+@inject IRepositorioUsuario RepoUsuario
+<h3>Gestion de usuarios</h3>
+<!--Solo el Administrador o los usuarios con los permisos de gestión de usuarios podrán
+asignar permisos adicionales-->
+
+@if (Sesion.Usuario is null || !Autorizado)
+{
+    <p>No tenés permiso para acceder a esta sección.</p>
+}
+else
+{
+    <div class="mb-3">
+    <label>Seleccionar usuario receptor:</label>
+    <select class="form-control" @onchange="OnUsuarioSeleccionado">
+        <option disabled selected value="">-- Seleccione un usuario --</option>
+        @foreach (var u in usuarios)
+        {
+            <option value="@u.Id">@u.Nombre @u.Apellido (@u.Email)</option>
+        }
+    </select>
+    </div>
+
+    @if (modelo.IdReceptor != 0 && permisosFiltrados.Length > 0)
+    {
+    <div class="mb-3">
+        <label>Seleccionar permiso:</label>
+        <select class="form-control" @bind="modelo.Permiso">
+            @foreach (var permiso in permisosFiltrados)
+            {
+                <option value="@((int)permiso)">@permiso</option>
+            }
+        </select>
+    </div>
+    }
+    else if (modelo.IdReceptor != 0)
+    {
+    <p class="text-warning">El usuario ya posee todos los permisos disponibles.</p>
+    }
+
+}
+
+@code {
+    private OtorgarPermisoModel modelo { get; set; } = new();
+    private List<Usuario> usuarios = [];
+    private Dictionary<Permiso, bool> permisosSeleccionados = [];
+    private int usuarioSeleccionadoId;
+    private string mensaje = "";
+    private bool Autorizado = false;
+
+    private Permiso[] permisosDisponibles = new[] {
+        Permiso.UsuarioAlta,
+        Permiso.UsuarioBaja,
+        Permiso.UsuarioModificacion,
+        Permiso.EventoAlta,
+        Permiso.EventoBaja,
+        Permiso.EventoModificacion,
+        Permiso.ReservaAlta,
+        Permiso.ReservaBaja,
+        Permiso.ReservaModificacion,
+        Permiso.PersonaAlta,
+        Permiso.PersonaBaja,
+        Permiso.PersonaModificacion
+    };
+
+
+    private Permiso[] permisosFiltrados = [];
+
+    private void OtorgarPermisos()
+    {
+        try
+        {
+            foreach (var permiso in permisosSeleccionados.Where(p => p.Value).Select(p => p.Key))
+            {
+                DarPermiso.Ejecutar(Sesion.Usuario.Id, usuarioSeleccionadoId, permiso);
+            }
+
+            mensaje = "Permisos otorgados correctamente.";
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al otorgar permisos: {ex.Message}";
+        }
+    }
+    private void OnUsuarioSeleccionado(ChangeEventArgs e){
+        if (int.TryParse(e.Value?.ToString(), out int id))
+        {
+            modelo.IdReceptor = id;
+            var usuario = usuarios.FirstOrDefault(u => u.Id == id);
+            if (usuario != null)
+            {
+            permisosFiltrados = permisosDisponibles
+                .Where(p => !usuario.Permisos.Contains(p))
+                .ToArray();
+            }
+        }
+    }
+}
 
