@@ -2,14 +2,14 @@ using System.ComponentModel.DataAnnotations;
 
 public class RegistroUsuarioModel
 {
-    [Required]
+    [Required(ErrorMessage = "El nombre no puede estar vacío.")]
     public string? Nombre { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "El apellido no puede estar vacío.")]
     public string? Apellido { get; set; }
 
-    [Required]
-    [EmailAddress(ErrorMessage = "El mail no puede estar vacío.")]
+    [Required(ErrorMessage = "Ingrese su mail.")]
+    [EmailAddress(ErrorMessage = "El mail no es válido.")]
     public string? Email { get; set; }
 
     [Required(ErrorMessage = "La contraseña no puede estar vacía.")]
