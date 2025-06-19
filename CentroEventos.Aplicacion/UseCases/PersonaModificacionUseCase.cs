@@ -6,7 +6,7 @@ public class PersonaModificacionUseCase(IRepositorioPersona repositorio, Validad
 {
     public void Ejecutar(Persona persona, int idUsuario)
     {
-        if (!autorizacion.PoseeElPermiso(idUsuario, Permiso.UsuarioModificacion)){
+        if (!autorizacion.PoseeElPermiso(idUsuario, Permiso.PersonaModificacion)){
             throw new FalloAutorizacionException("No posee el pemiso para realizar esta acción \n");
         }
 
