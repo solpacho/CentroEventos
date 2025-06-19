@@ -14,5 +14,6 @@ public interface IRepositorioPersona
     bool DniRepetido(string dni);
     bool EmailRepetido(string mail); 
     bool ExistePersona(int id);
+    List<Persona> ListarResponsables();
 
 }
