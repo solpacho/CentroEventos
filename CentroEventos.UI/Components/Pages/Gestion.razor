@@ -70,6 +70,14 @@ else
 
     private Permiso[] permisosFiltrados = [];
 
+    protected override void OnInitialized()
+    {
+        if (Sesion.Usuario is not null)
+        {
+            Autorizado = TienePermisos();
+            usuarios = RepoUsuario.ListarUsuarios();
+        }
+    }
     private void OtorgarPermisos()
     {
         try
@@ -99,5 +107,16 @@ else
             }
         }
     }
+    private bool TienePermisos()
+    {
+        var permisosAutorizados = new[] {
+            Permiso.UsuarioAlta,
+            Permiso.UsuarioModificacion,
+            Permiso.UsuarioBaja,
+        };
+
+        return Sesion.Usuario.Permisos.Intersect(permisosAutorizados).Any();
+    }
+
 }
 
