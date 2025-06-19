@@ -29,6 +29,7 @@
     <div class="mb-3">
         <label>Contraseña:</label>
         <InputText class="form-control" type="password" @bind-Value="modelo.Contrasenia" />
+        <ValidationMessage For="@(() => modelo.Contrasenia)" />
     </div>
 
     <button class="btn btn-primary" type="submit">Registrarse</button>
