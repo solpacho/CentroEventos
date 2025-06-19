@@ -24,6 +24,7 @@ builder.Services.AddScoped<SesionUsuario>();
 builder.Services.AddScoped<ListarResponsablesUseCase>();
 builder.Services.AddScoped<ListarUsuariosUseCase>();
 builder.Services.AddScoped<ListarPersonaUseCase>();
+builder.Services.AddScoped<ListarReservasUseCase>();
 builder.Services.AddScoped<ListarEventosUseCase>();
 
 var app = builder.Build();
