@@ -26,6 +26,23 @@ public class RepositorioPersonaSQL: IRepositorioPersona
         }
     }
 
+        public List<Persona> ListarResponsables()
+    {
+        using var _context = new RepositorioContext();
+        {
+
+            // 1) Extrae los IDs únicos de responsables desde la tabla Eventos
+            var responsablesIds = _context.Eventos
+                .Select(e => e.ResponsableId)
+                .Distinct();
+
+            // 2) Filtra Personas cuyo Id esté en esa lista
+            return _context.Personas
+                .Where(p => responsablesIds.Contains(p.Id))
+                .ToList();
+        }
+    }
+
     public void Modificar (Persona persona){ //este metodo:
         using (var _context = new RepositorioContext()){
         var perExistente = _context.Personas.Find(persona.Id);
