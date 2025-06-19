@@ -1,6 +1,7 @@
 @page "/eventos"
 @inject ListarEventosUseCase ObtenerEventosUseCase
-@inject ListarEventosConCupoDisponibleUseCase ObtenerEventosConCupoUseCase
+@inject ObtenerUsuarioActualUseCase ObtenerUsuarioActual ///preguntar
+@inject IServicioAutorizacion ServicioAutorizacion
 
 <h3>Eventos</h3>
 
@@ -8,14 +9,14 @@
 {
     <p>Cargando eventos...</p>
 }
-else if (!eventos.Any())
-{
-    <p>No hay eventos disponibles.</p>
-}
 else
 {
-    <h4>Todos los eventos:</h4>
-    @foreach (var evento in eventos)
+    if (tienePermisoEventoAlta)
+    {
+        <button class="btn btn-success mb-3">Nuevo Evento</button>
+    }
+
+    foreach (var evento in eventos)
     {
         <div class="card mb-3 p-3 border">
             <h4>@evento.Nombre</h4>
@@ -24,41 +25,33 @@ else
             <p><strong>Duración:</strong> @evento.DuracionHoras hora(s)</p>
             <p><strong>Cupo máximo:</strong> @evento.CupoMaximo personas</p>
             <p><strong>ID del responsable:</strong> @evento.ResponsableId</p>
+            
+            @if (tienePermisoEventoModificacion)
+            {
+                <button class="btn btn-primary me-2">Modificar</button>
+            }
+            @if (tienePermisoEventoBaja)
+            {
+                <button class="btn btn-danger">Eliminar</button>
+            }
         </div>
-    }
-
-    <h3>Eventos con cupo disponible</h3>
-    @if (eventosConCupo is null)
-    {
-        <p>Cargando eventos con cupo...</p>
-    }
-    else if (!eventosConCupo.Any())
-    {
-        <p>No hay eventos con cupo disponible.</p>
-    }
-    else
-    {
-        @foreach (var evento in eventosConCupo)
-        {
-            <div class="card mb-3 p-3 border">
-                <h4>@evento.Nombre</h4>
-                <p><strong>Descripción:</strong> @evento.Descripcion</p>
-                <p><strong>Fecha y hora de inicio:</strong> @evento.FechaHoraInicio.ToString("dd/MM/yyyy HH:mm")</p>
-                <p><strong>Duración:</strong> @evento.DuracionHoras hora(s)</p>
-                <p><strong>Cupo máximo:</strong> @evento.CupoMaximo personas</p>
-                <p><strong>ID del responsable:</strong> @evento.ResponsableId</p>
-            </div>
-        }
     }
 }
 
 @code {
     private List<EventoDeportivo>? eventos;
-    private List<EventoDeportivo>? eventosConCupo;
+    private Usuario? usuario;
+    private bool tienePermisoEventoAlta;
+    private bool tienePermisoEventoBaja;
+    private bool tienePermisoEventoModificacion;
 
     protected override void OnInitialized()
     {
+        usuario = ObtenerUsuarioActual.Ejecutar();
         eventos = ObtenerEventosUseCase.Ejecutar();
-        eventosConCupo = ObtenerEventosConCupoUseCase.Ejecutar();
+
+        tienePermisoEventoAlta = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.EventoAlta);
+        tienePermisoEventoBaja = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.EventoBaja);
+        tienePermisoEventoModificacion = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.EventoModificacion);
     }
 }
