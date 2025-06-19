@@ -25,5 +25,15 @@ public class SesionUsuario(IniciarSesionUseCase login)
         OnChange?.Invoke();
     }
 
+    // Nuevo método para actualizar los datos del usuario en la sesión
+    public void ActualizarUsuario(Usuario usuarioActualizado)
+    {
+        if (Usuario != null && usuarioActualizado != null)
+        {
+            Usuario = usuarioActualizado;
+            OnChange?.Invoke(); // Notificar que cambió la sesión
+        }
+    }
+
     public string Email => Usuario?.Email ?? "";
 }
