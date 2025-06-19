@@ -1,5 +1,6 @@
 @page "/reservas"
 @inject ListarReservasUseCase ObtenerReservasUseCase
+@inject ReservaAltaUseCase AltaReservaUseCase
 @inject SesionUsuario Sesion
 @inject IServicioAutorizacion ServicioAutorizacion
 @rendermode InteractiveServer
@@ -12,21 +13,56 @@
 }
 else if (reservas is null)
 {
-    <p>No existen reservas.</p>
+    <p>Cargando reservas...</p>
 }
 else
 {
     if (tienePermisoReservaAlta)
     {
-        <button class="btn btn-success mb-3">Nueva Reserva</button>
+        <button class="btn btn-success mb-3" @onclick="() => mostrarFormReserva = true">Nueva Reserva</button>
     }
 
-    foreach (var reserva in reservas)
+    @if (mostrarFormReserva)
+    {
+        <EditForm Model="@nuevaReserva" OnValidSubmit="CrearReserva">
+            <DataAnnotationsValidator />
+            @if (!string.IsNullOrWhiteSpace(mensajeError))
+            {
+                <div class="alert alert-danger">
+                    @mensajeError
+                </div>
+            }
+            <div class="mb-2">
+                <label>ID Persona:</label>
+                <InputNumber @bind-Value="nuevaReserva.PersonaId" class="form-control" />
+            </div>
+            <div class="mb-2">
+                <label>ID Evento:</label>
+                <InputNumber @bind-Value="nuevaReserva.EventoDeportivoId" class="form-control" />
+            </div>
+            <!-- Si quieres permitir elegir estado, descomenta esto:
+            <div class="mb-2">
+                <label>Estado:</label>
+                <InputSelect @bind-Value="nuevaReserva.Estado" class="form-control">
+                    @foreach (var estado in Enum.GetValues(typeof(EstadoAsistencia)))
+                    {
+                        <option value="@((int)estado)">@estado</option>
+                    }
+                </InputSelect>
+            </div>
+            -->
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="btn btn-secondary ms-2" @onclick="CancelarFormReserva">Cancelar</button>
+        </EditForm>
+    }
+
+    @foreach (var reserva in reservas)
     {
         <div class="card mb-3 p-3 border">
             <p><strong>ID del Evento:</strong> @reserva.EventoDeportivoId</p>
             <p><strong>ID del Usuario:</strong> @reserva.PersonaId</p>
             <p><strong>Fecha de Reserva:</strong> @reserva.FechaAltaReserva.ToString("dd/MM/yyyy")</p>
+            <p><strong>Estado:</strong> @reserva.Estado</p>
 
             @if (tienePermisoReservaModificacion)
             {
@@ -48,6 +84,11 @@ else
     private bool tienePermisoReservaBaja;
     private bool tienePermisoReservaModificacion;
 
+    private bool mostrarFormReserva = false;
+    private string mensajeError = "";
+
+    private ReservaAltaModel nuevaReserva = new();
+
     protected override void OnInitialized()
     {
         usuario = Sesion.Usuario;
@@ -55,10 +96,62 @@ else
         if (usuario is null)
             return;
 
-        reservas = ObtenerReservasUseCase.Ejecutar();
+        CargarReservasYPermisos();
+    }
 
-        tienePermisoReservaAlta = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.ReservaAlta);
-        tienePermisoReservaBaja = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.ReservaBaja);
-        tienePermisoReservaModificacion = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.ReservaModificacion);
+    private void CargarReservasYPermisos()
+    {
+        reservas = ObtenerReservasUseCase.Ejecutar();
+        tienePermisoReservaAlta = ServicioAutorizacion.PoseeElPermiso(usuario!.Id, Permiso.ReservaAlta);
+        tienePermisoReservaBaja = ServicioAutorizacion.PoseeElPermiso(usuario!.Id, Permiso.ReservaBaja);
+        tienePermisoReservaModificacion = ServicioAutorizacion.PoseeElPermiso(usuario!.Id, Permiso.ReservaModificacion);
+    }
+
+    private void CancelarFormReserva()
+    {
+        mostrarFormReserva = false;
+        mensajeError = "";
+        nuevaReserva = new();
+    }
+
+    private void CrearReserva()
+    {
+        mensajeError = "";
+        try
+        {
+            var reserva = new Reserva
+            {
+                PersonaId = nuevaReserva.PersonaId,
+                EventoDeportivoId = nuevaReserva.EventoDeportivoId,
+                FechaAltaReserva = DateTime.Now,
+                Estado = nuevaReserva.Estado // o EstadoAsistencia.Pendiente si no expones el campo en el form
+            };
+
+            AltaReservaUseCase.Ejecutar(reserva, usuario!.Id);
+
+            mostrarFormReserva = false;
+            nuevaReserva = new();
+            CargarReservasYPermisos();
+        }
+        catch (FalloAutorizacionException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        catch (EntidadNotFoundException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        catch (DuplicadoException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        catch (CupoExcedidoException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            mensajeError = "Error inesperado: " + ex.Message;
+        }
     }
 }
