@@ -9,20 +9,36 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddScoped<UsuarioAltaUseCase>();
-builder.Services.AddScoped<HashHelperUseCase>();
-builder.Services.AddScoped<IHashService, HashService>();
-builder.Services.AddScoped<ValidadorUsuario>();
+//Repositorios.
 builder.Services.AddScoped<IServicioAutorizacion, ServicioAutorizacionProvisorio>();
 builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuarioSQL>();
-builder.Services.AddScoped<IRepositorioPersona, RepositorioPersonaSQL>(); // faltaba agregar
-builder.Services.AddScoped<IRepositorioEvento,  RepositorioEventosSQL>(); // faltaba agregar
-builder.Services.AddScoped<IRepositorioReserva,  RepositorioReservaSQL>();
+builder.Services.AddScoped<IRepositorioPersona, RepositorioPersonaSQL>(); 
+builder.Services.AddScoped<IRepositorioEvento,  RepositorioEventosSQL>();
+builder.Services.AddScoped<IRepositorioReserva, RepositorioReservaSQL>();
+//Validadores
+builder.Services.AddScoped<ValidadorUsuario>();
+builder.Services.AddScoped<ValidadorPersona>();
+builder.Services.AddScoped<ValidadorEventos>();
+builder.Services.AddScoped<ValidadorReserva>();
+//Casos de uso Usuario
+builder.Services.AddScoped<UsuarioAltaUseCase>();
+builder.Services.AddScoped<SesionUsuario>();
+builder.Services.AddScoped<UsuarioModificacionUseCase>();
+builder.Services.AddScoped<HashHelperUseCase>();
+builder.Services.AddScoped<IHashService, HashService>();
 builder.Services.AddScoped<IniciarSesionUseCase>();
 builder.Services.AddScoped<DarPermisoUseCase>();
-builder.Services.AddScoped<UsuarioModificacionUseCase>();
-builder.Services.AddScoped<SesionUsuario>();
+//Casos de uso persona
+builder.Services.AddScoped<PersonaModificacionUseCase>();
+builder.Services.AddScoped<PersonaBajaUseCase>();
+builder.Services.AddScoped<PersonaAltaUseCase>();
+//Casos de uso Reserva
+builder.Services.AddScoped<ReservaAltaUseCase>();
+builder.Services.AddScoped<ReservaBajaUseCase>();
+builder.Services.AddScoped<ReservaModificacionUseCase>();
 // UseCase para listar responsables
+builder.Services.AddScoped<ListarAsistenciaAEventoUseCase>();
+builder.Services.AddScoped<ListarEventosConCupoDisponibleUseCase>();
 builder.Services.AddScoped<ListarResponsablesUseCase>();
 builder.Services.AddScoped<ListarUsuariosUseCase>();
 builder.Services.AddScoped<ListarPersonaUseCase>();
@@ -48,3 +64,4 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.Run();
+
