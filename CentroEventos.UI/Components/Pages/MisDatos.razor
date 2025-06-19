@@ -1,12 +1,12 @@
 @page "/mis-datos"
-@inject ObtenerUsuarioActualUseCase ObtenerUsuarioActual //preguntar 
+@inject SesionUsuario Sesion
 @inject UsuarioModificacionUseCase ModificarUsuario
 
 <h3>Mis Datos</h3>
 
 @if (usuario is null)
 {
-    <p>Cargando tus datos...</p>
+    <p>Debés iniciar sesión para ver tus datos.</p>
 }
 else if (!modoEdicion)
 {
@@ -47,12 +47,11 @@ else
 @code {
     private Usuario? usuario;
     private Usuario? usuarioEditado;
-
     private bool modoEdicion = false;
 
     protected override void OnInitialized()
     {
-        usuario = ObtenerUsuarioActual.Ejecutar(); // debe devolver el usuario autenticado
+        usuario = Sesion.Usuario;
 
         if (usuario is not null)
         {
@@ -82,5 +81,4 @@ else
             modoEdicion = false;
         }
     }
-
 }
