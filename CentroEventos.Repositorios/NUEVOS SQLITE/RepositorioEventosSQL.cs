@@ -56,7 +56,13 @@ public class RepositorioEventosSQL : IRepositorioEvento
             return _context.Eventos.Any(e => e.ResponsableId == id);
         }
     }
-
+    public bool TieneReservasEvento(int idEvento)
+    {
+        using (var _context = new RepositorioContext())
+        {
+            return _context.Reservas.Any(r => r.EventoDeportivoId == idEvento);
+        }
+    }
     public void Modificar(EventoDeportivo evento)
     {   using (var _context = new RepositorioContext())
         {
