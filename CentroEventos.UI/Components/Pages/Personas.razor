@@ -3,6 +3,8 @@
 @inject ListarResponsablesUseCase ResponsablesUseCase
 @inject ListarPersonaUseCase PersonasUseCase
 @inject PersonaAltaUseCase AltaPersonaUseCase
+@inject PersonaModificacionUseCase ModificacionPersonaUseCase
+@inject PersonaBajaUseCase BajaPersonaUseCase
 @inject SesionUsuario Sesion
 @inject IServicioAutorizacion ServicioAutorizacion
 @rendermode InteractiveServer
@@ -43,28 +45,81 @@
     </EditForm>
 }
 
+@if (mostrarFormModificacion)
+{
+    <div class="card mb-3 p-3 border">
+        <h5>Modificar Persona</h5>
+        <EditForm Model="@personaModificacion" OnValidSubmit="ModificarPersona">
+            <DataAnnotationsValidator />
+            @if (!string.IsNullOrWhiteSpace(mensajeErrorModificacion))
+            {
+                <div class="alert alert-danger">@mensajeErrorModificacion</div>
+            }
+            <div class="mb-2">
+                <label>DNI:</label>
+                <InputText @bind-Value="personaModificacion.DNI" class="form-control" />
+            </div>
+            <div class="mb-2">
+                <label>Nombre:</label>
+                <InputText @bind-Value="personaModificacion.Nombre" class="form-control" />
+            </div>
+            <div class="mb-2">
+                <label>Apellido:</label>
+                <InputText @bind-Value="personaModificacion.Apellido" class="form-control" />
+            </div>
+            <div class="mb-2">
+                <label>Email:</label>
+                <InputText @bind-Value="personaModificacion.Email" class="form-control" />
+            </div>
+            <div class="mb-2">
+                <label>Teléfono:</label>
+                <InputText @bind-Value="personaModificacion.Telefono" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            <button type="button" class="btn btn-secondary ms-2" @onclick="CancelarModificacion">Cancelar</button>
+        </EditForm>
+    </div>
+}
+
 @if (personas is null){
     <p>Cargando personas</p>
 }
 else if (!personas.Any())
 {
-    <p>No hay responsables definidos.</p>
+    <p>No hay personas definidas.</p>
 }
 else
 {
     @foreach (var p in personas)
     {
     <div class="card mb-2 p-2 border">
-        <span>
-            <strong>ID:</strong> @p.Id |
-            <strong>Nombre y apellido:</strong> @p.Nombre @p.Apellido |
-            <strong>DNI:</strong> @p.DNI |
-            <strong>Email:</strong> @p.Email |
-            <strong>Teléfono:</strong> @p.Telefono
-        </span>
+        <div class="d-flex justify-content-between align-items-center">
+            <span>
+                <strong>ID:</strong> @p.Id |
+                <strong>Nombre y apellido:</strong> @p.Nombre @p.Apellido |
+                <strong>DNI:</strong> @p.DNI |
+                <strong>Email:</strong> @p.Email |
+                <strong>Teléfono:</strong> @p.Telefono
+            </span>
+            <div class="btn-group">
+                @if (tienePermisoModificacion)
+                {
+                    <button class="btn btn-warning btn-sm" @onclick="() => IniciarModificacion(p)">
+                        Modificar
+                    </button>
+                }
+                @if (tienePermisoBaja)
+                {
+                    <button class="btn btn-danger btn-sm" @onclick="() => EliminarPersona(p.Id)">
+                        Eliminar
+                    </button>
+                }
+            </div>
+        </div>
     </div>
     }
 }
+
 <h3>Personas responsables de eventos</h3>
 
 @if (responsables is null)
@@ -94,13 +149,27 @@ else
     private List<Persona>? responsables;
 
     private bool mostrarForm = false;
+    private bool mostrarFormModificacion = false;
     private PersonaAltaModel nuevaPersona = new();
+    private PersonaModificacionModel personaModificacion = new();
     private string mensajeError = "";
+    private string mensajeErrorModificacion = "";
+
+    private bool tienePermisoModificacion = false;
+    private bool tienePermisoBaja = false;
 
     protected override void OnInitialized()
     {
-        personas    = PersonasUseCase.Ejecutar();
+        personas = PersonasUseCase.Ejecutar();
         responsables = ResponsablesUseCase.Ejecutar();
+        
+        // Verificar permisos del usuario actual
+        var usuario = Sesion.Usuario;
+        if (usuario is not null)
+        {
+            tienePermisoModificacion = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.PersonaModificacion);
+            tienePermisoBaja = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.PersonaBaja);
+        }
     }
 
     private void CancelarForm()
@@ -108,6 +177,20 @@ else
         mostrarForm = false;
         mensajeError = "";
         nuevaPersona = new();
+    }
+
+    private void IniciarModificacion(Persona persona)
+    {
+        personaModificacion = new PersonaModificacionModel(persona);
+        mostrarFormModificacion = true;
+        mensajeErrorModificacion = "";
+    }
+
+    private void CancelarModificacion()
+    {
+        mostrarFormModificacion = false;
+        mensajeErrorModificacion = "";
+        personaModificacion = new();
     }
 
     private void CrearPersona()
@@ -133,7 +216,7 @@ else
             AltaPersonaUseCase.Ejecutar(persona, usuario.Id);
 
             // Refresca la lista de personas
-            personas    = PersonasUseCase.Ejecutar();
+            personas = PersonasUseCase.Ejecutar();
             responsables = ResponsablesUseCase.Ejecutar();
 
             mostrarForm = false;
@@ -148,6 +231,91 @@ else
             mensajeError = ex.Message;
         }
         catch (DuplicadoException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            mensajeError = "Error inesperado: " + ex.Message;
+        }
+    }
+
+    private void ModificarPersona()
+    {
+        mensajeErrorModificacion = "";
+        try
+        {
+            var usuario = Sesion.Usuario;
+            if (usuario is null)
+            {
+                mensajeErrorModificacion = "Debe iniciar sesión para modificar personas.";
+                return;
+            }
+
+            var persona = new Persona(
+                personaModificacion.DNI,
+                personaModificacion.Nombre,
+                personaModificacion.Apellido,
+                personaModificacion.Email,
+                personaModificacion.Telefono
+            )
+            {
+                Id = personaModificacion.Id
+            };
+
+            ModificacionPersonaUseCase.Ejecutar(persona, usuario.Id);
+
+            // Refresca la lista de personas
+            personas = PersonasUseCase.Ejecutar();
+            responsables = ResponsablesUseCase.Ejecutar();
+
+            mostrarFormModificacion = false;
+            personaModificacion = new();
+        }
+        catch (FalloAutorizacionException ex)
+        {
+            mensajeErrorModificacion = ex.Message;
+        }
+        catch (ValidacionException ex)
+        {
+            mensajeErrorModificacion = ex.Message;
+        }
+        catch (EntidadNotFoundException ex)
+        {
+            mensajeErrorModificacion = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            mensajeErrorModificacion = "Error inesperado: " + ex.Message;
+        }
+    }
+
+    private void EliminarPersona(int idPersona)
+    {
+        try
+        {
+            var usuario = Sesion.Usuario;
+            if (usuario is null)
+            {
+                mensajeError = "Debe iniciar sesión para eliminar personas.";
+                return;
+            }
+
+            BajaPersonaUseCase.Ejecutar(idPersona, usuario.Id);
+
+            // Refresca la lista de personas
+            personas = PersonasUseCase.Ejecutar();
+            responsables = ResponsablesUseCase.Ejecutar();
+        }
+        catch (FalloAutorizacionException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        catch (EntidadNotFoundException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        catch (OperacionInvalidaException ex)
         {
             mensajeError = ex.Message;
         }
