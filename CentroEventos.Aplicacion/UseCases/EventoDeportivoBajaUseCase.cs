@@ -16,7 +16,7 @@ public class EventoDeportivoBajaUseCase(IRepositorioEvento repositorio, IReposit
         }
 
         //No puede eliminarse un EventoDeportivo si existen Reservas asociadas al mismo
-        if (repoReservas.CantidadReservasEvento(idEvento) > 0){
+        if (repoReservas.TieneReserva(idEvento)){
             throw new OperacionInvalidaException("No es posibe eliminar un evento que posee reservas asociadas \n");
         }
             
