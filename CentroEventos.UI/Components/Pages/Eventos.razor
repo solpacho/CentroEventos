@@ -1,11 +1,15 @@
 @page "/eventos"
 @inject ListarEventosUseCase ObtenerEventosUseCase
-@inject ObtenerUsuarioActualUseCase ObtenerUsuarioActual ///preguntar
+@inject SesionUsuario Sesion
 @inject IServicioAutorizacion ServicioAutorizacion
 
 <h3>Eventos</h3>
 
-@if (eventos is null)
+@if (usuario is null)
+{
+    <p>Debés iniciar sesión para ver los eventos.</p>
+}
+else if (eventos is null)
 {
     <p>Cargando eventos...</p>
 }
@@ -25,7 +29,7 @@ else
             <p><strong>Duración:</strong> @evento.DuracionHoras hora(s)</p>
             <p><strong>Cupo máximo:</strong> @evento.CupoMaximo personas</p>
             <p><strong>ID del responsable:</strong> @evento.ResponsableId</p>
-            
+
             @if (tienePermisoEventoModificacion)
             {
                 <button class="btn btn-primary me-2">Modificar</button>
@@ -47,7 +51,11 @@ else
 
     protected override void OnInitialized()
     {
-        usuario = ObtenerUsuarioActual.Ejecutar();
+        usuario = Sesion.Usuario;
+
+        if (usuario is null)
+            return;
+
         eventos = ObtenerEventosUseCase.Ejecutar();
 
         tienePermisoEventoAlta = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.EventoAlta);
