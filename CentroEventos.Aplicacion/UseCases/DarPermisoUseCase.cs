@@ -4,11 +4,19 @@ public class DarPermisoUseCase(IServicioAutorizacion _servicioAutorizacion)
 {
     public void Ejecutar(int idEmisor, int idReceptor, Permiso permiso)
     {
-        // Sólo permite dar permisos relacionados con usuarios
         var permisosPermitidos = new[] {
             Permiso.UsuarioAlta,
             Permiso.UsuarioBaja,
-            Permiso.UsuarioModificacion
+            Permiso.UsuarioModificacion,
+            Permiso.EventoAlta,
+            Permiso.EventoBaja,
+            Permiso.EventoModificacion,
+            Permiso.ReservaAlta,
+            Permiso.ReservaBaja,
+            Permiso.ReservaModificacion,
+            Permiso.PersonaAlta,
+            Permiso.PersonaBaja,
+            Permiso.PersonaModificacion
         };
 
         if (!permisosPermitidos.Contains(permiso))
@@ -19,6 +27,8 @@ public class DarPermisoUseCase(IServicioAutorizacion _servicioAutorizacion)
         {
             throw new Exception("No tiene permiso para otorgar permisos.");
         }
+
+
         // Ejecuta el otorgamiento del permiso
         _servicioAutorizacion.DarPermiso(idEmisor, idReceptor, permiso);
     }
