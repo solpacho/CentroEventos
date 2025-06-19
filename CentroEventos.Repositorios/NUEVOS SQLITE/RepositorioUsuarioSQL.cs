@@ -81,7 +81,7 @@ public class RepositorioUsuarioSQL : IRepositorioUsuario
     {
          using (var _context = new RepositorioContext())
         {
-            return _context.Usuarios.Any(u => u.Email == email);
+            return _context.Usuarios.Any(u => u.Email.ToLower() == email.ToLower());
         }
     }
 
