@@ -17,6 +17,7 @@ builder.Services.AddScoped<IServicioAutorizacion, ServicioAutorizacionProvisorio
 builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuarioSQL>();
 builder.Services.AddScoped<IRepositorioPersona, RepositorioPersonaSQL>(); // faltaba agregar
 builder.Services.AddScoped<IRepositorioEvento,  RepositorioEventosSQL>(); // faltaba agregar
+builder.Services.AddScoped<IRepositorioReserva,  RepositorioReservaSQL>();
 builder.Services.AddScoped<IniciarSesionUseCase>();
 builder.Services.AddScoped<SesionUsuario>();
 // UseCase para listar responsables
