@@ -1,0 +1,35 @@
+@page "/Personas"
+@inject ListarResponsablesUseCase UseCase
+
+<h3>Personas responsables de eventos</h3>
+
+@if (responsables is null)
+{
+    <p>Cargando responsables…</p>
+}
+else if (!responsables.Any())
+{
+    <p>No hay responsables definidos.</p>
+}
+else
+{
+    @foreach (var p in responsables)
+    {
+        <div class="card mb-3 p-3 border">
+            <p><strong>ID:</strong> @p.Id</p>
+            <p><strong>Nombre:</strong> @p.Nombre @p.Apellido</p>
+            <p><strong>DNI:</strong> @p.DNI</p>
+            <p><strong>Email:</strong> @p.Email</p>
+            <p><strong>Teléfono:</strong> @p.Telefono</p>
+        </div>
+    }
+}
+
+@code {
+    private List<Persona>? responsables;
+
+    protected override void OnInitialized()
+    {
+        responsables = UseCase.Ejecutar();
+    }
+}
