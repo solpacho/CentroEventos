@@ -1,8 +1,10 @@
 @page "/eventos"
 @inject ListarEventosUseCase ObtenerEventosUseCase
+@inject EventoDeportivoAltaUseCase AltaEventoUseCase
 @inject SesionUsuario Sesion
-@rendermode InteractiveServer
 @inject IServicioAutorizacion ServicioAutorizacion
+@using CentroEventos.UI;
+@rendermode InteractiveServer
 
 <h3>Eventos</h3>
 
@@ -18,29 +20,70 @@ else
 {
     if (tienePermisoEventoAlta)
     {
-        <button class="btn btn-success mb-3">Nuevo Evento</button>
+        <button class="btn btn-success mb-3" @onclick="() => mostrarFormEvento = true">Nuevo Evento</button>
+    }
+
+    if (mostrarFormEvento)
+    {
+        <EditForm Model="@nuevoEvento" OnValidSubmit="CrearEvento">
+            <DataAnnotationsValidator />
+            @if (!string.IsNullOrWhiteSpace(mensajeError))
+            {
+                <div class="alert alert-danger">@mensajeError</div>
+            }
+            <div class="mb-2">
+                <label>Nombre:</label>
+                <InputText @bind-Value="nuevoEvento.Nombre" class="form-control" />
+            </div>
+            <div class="mb-2">
+                <label>Descripción:</label>
+                <InputText @bind-Value="nuevoEvento.Descripcion" class="form-control" />
+            </div>
+            <div class="mb-2">
+                <label>Fecha y hora de inicio:</label>
+                <InputDate @bind-Value="nuevoEvento.FechaHoraInicio" class="form-control" />
+            </div>
+            <div class="mb-2">
+                <label>Duración (horas):</label>
+                <InputNumber @bind-Value="nuevoEvento.DuracionHoras" class="form-control" />
+            </div>
+            <div class="mb-2">
+                <label>Cupo máximo:</label>
+                <InputNumber @bind-Value="nuevoEvento.CupoMaximo" class="form-control" />
+            </div>
+            <div class="mb-2">
+                <label>ID del responsable:</label>
+                <InputNumber @bind-Value="nuevoEvento.ResponsableId" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="btn btn-secondary ms-2" @onclick="CancelarFormEvento">Cancelar</button>
+        </EditForm>
     }
 
     foreach (var evento in eventos)
-    {
-        <div class="card mb-3 p-3 border">
-            <h4>@evento.Nombre</h4>
-            <p><strong>Descripción:</strong> @evento.Descripcion</p>
-            <p><strong>Fecha y hora de inicio:</strong> @evento.FechaHoraInicio.ToString("dd/MM/yyyy HH:mm")</p>
-            <p><strong>Duración:</strong> @evento.DuracionHoras hora(s)</p>
-            <p><strong>Cupo máximo:</strong> @evento.CupoMaximo personas</p>
-            <p><strong>ID del responsable:</strong> @evento.ResponsableId</p>
-
-            @if (tienePermisoEventoModificacion)
-            {
-                <button class="btn btn-primary me-2">Modificar</button>
-            }
-            @if (tienePermisoEventoBaja)
-            {
-                <button class="btn btn-danger">Eliminar</button>
-            }
+{
+    <div class="card mb-3 p-3 border">
+        <div>
+            <strong>@evento.Nombre</strong> |
+            <strong>Fecha:</strong> @evento.FechaHoraInicio.ToString("dd/MM/yyyy HH:mm") |
+            <strong>Duración:</strong> @evento.DuracionHoras hora(s) |
+            <strong>Cupo:</strong> @evento.CupoMaximo personas |
+            <strong>Responsable ID:</strong> @evento.ResponsableId
         </div>
-    }
+        <div>
+            <em>@evento.Descripcion</em>
+        </div>
+        @if (tienePermisoEventoModificacion)
+        {
+            <button class="btn btn-primary me-2">Modificar</button>
+        }
+        @if (tienePermisoEventoBaja)
+        {
+            <button class="btn btn-danger">Eliminar</button>
+        }
+    </div>
+}
+    
 }
 
 @code {
@@ -49,6 +92,10 @@ else
     private bool tienePermisoEventoAlta;
     private bool tienePermisoEventoBaja;
     private bool tienePermisoEventoModificacion;
+
+    private bool mostrarFormEvento = false;
+    private EventoAltaModel nuevoEvento = new();
+    private string mensajeError = "";
 
     protected override void OnInitialized()
     {
@@ -62,5 +109,54 @@ else
         tienePermisoEventoAlta = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.EventoAlta);
         tienePermisoEventoBaja = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.EventoBaja);
         tienePermisoEventoModificacion = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.EventoModificacion);
+    }
+
+    private void CancelarFormEvento()
+    {
+        mostrarFormEvento = false;
+        mensajeError = "";
+        nuevoEvento = new();
+    }
+
+    private void CrearEvento()
+    {
+        mensajeError = "";
+        try
+        {
+            if (usuario is null)
+            {
+                mensajeError = "Debe iniciar sesión para agregar eventos.";
+                return;
+            }
+
+            var evento = new EventoDeportivo(
+                nuevoEvento.Nombre!,
+                nuevoEvento.CupoMaximo,
+                nuevoEvento.ResponsableId,
+                nuevoEvento.DuracionHoras,
+                nuevoEvento.FechaHoraInicio,
+                nuevoEvento.Descripcion!
+            );
+
+            AltaEventoUseCase.Ejecutar(evento, usuario.Id);
+
+            // Refresca la lista de eventos
+            eventos = ObtenerEventosUseCase.Ejecutar();
+
+            mostrarFormEvento = false;
+            nuevoEvento = new();
+        }
+        catch (FalloAutorizacionException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        catch (ValidacionException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            mensajeError = "Error inesperado: " + ex.Message;
+        }
     }
 }
