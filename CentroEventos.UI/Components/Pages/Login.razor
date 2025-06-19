@@ -1,52 +1,76 @@
 @page "/Login"
 @rendermode InteractiveServer
-@inject NavigationManager Navigation
 @inject SesionUsuario Sesion
+
+@implements IDisposable
 
 <h3>Iniciar sesión</h3>
 
-<EditForm Model="@modelo" OnValidSubmit="IniciarSesion" FormName="LoginForm" Enhance>
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="mb-3">
-        <label for="email">Email:</label>
-        <InputText id="email" name="modelo.Email" class="form-control" @bind-Value="modelo.Email" />
-        <ValidationMessage For="@(() => modelo.Email)" />
-    </div>
-
-    <div class="mb-3">
-        <label for="contrasenia">Contraseña:</label>
-        <InputText id="contrasenia" name="modelo.Contrasenia" class="form-control" type="password" @bind-Value="modelo.Contrasenia" />
-        <ValidationMessage For="@(() => modelo.Contrasenia)" />
-    </div>
-
-    <button class="btn btn-primary" type="submit">Iniciar Sesión</button>
-</EditForm>
-
-@if (!string.IsNullOrEmpty(mensaje))
+@if (!Sesion.EstaLogueado)
 {
-    <div class="alert alert-danger">@mensaje</div>
+    <EditForm Model="@modelo" OnValidSubmit="IniciarSesion">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label for="email">Email:</label>
+            <InputText
+                id="email"
+                class="form-control"
+                @bind-Value="modelo.Email" />
+            <ValidationMessage For="@(() => modelo.Email)" />
+        </div>
+
+        <div class="mb-3">
+            <label for="contrasenia">Contraseña:</label>
+            <InputText
+                id="contrasenia"
+                type="password"
+                class="form-control"
+                @bind-Value="modelo.Contrasenia" />
+            <ValidationMessage For="@(() => modelo.Contrasenia)" />
+        </div>
+
+        <button class="btn btn-primary" type="submit">Iniciar Sesión</button>
+    </EditForm>
+
+    @if (!string.IsNullOrEmpty(mensaje))
+    {
+        <div class="alert alert-danger mt-3">@mensaje</div>
+    }
+}
+else
+{
+    <div class="alert alert-success">
+        Bienvenido, @Sesion.Usuario!.Nombre. <br />
+        <NavLink href="/Inicio">Ir a la página principal</NavLink>
+    </div>
 }
 
 @code {
-    [SupplyParameterFromForm]
     private LoginModel modelo { get; set; } = new();
-    
     private string mensaje = "";
+
+    protected override void OnInitialized()
+    {
+        Sesion.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        Sesion.OnChange -= StateHasChanged;
+    }
 
     private void IniciarSesion()
     {
         try
         {
             Sesion.IniciarSesion(modelo.Email!, modelo.Contrasenia!);
-            mensaje = "Bienvenido. Redirigiendo...";
-            Navigation.NavigateTo("/Inicio");
+            // Al cambiar Sesion.EstaLogueado, StateHasChanged se invocará automáticamente
         }
         catch (Exception ex)
         {
-            mensaje = $"Error al iniciar sesión: {ex.Message}";
+            mensaje = ex.Message;
         }
     }
 }
-
