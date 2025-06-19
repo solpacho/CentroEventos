@@ -1,4 +1,5 @@
 @page "/Registro"
+@rendermode InteractiveServer
 @inject UsuarioAltaUseCase AltaUsuario
 @inject NavigationManager Navigation
 
@@ -41,7 +42,8 @@
 }
 
 @code {
-    private RegistroUsuarioModel modelo = new();
+    [SupplyParameterFromForm]
+    private RegistroUsuarioModel modelo { get; set; } = new();
     private string mensaje = "";
 
     private void Registrarse()
@@ -49,6 +51,8 @@
         try
         {
             var nuevoUsuario = new Usuario(modelo.Nombre, modelo.Apellido, modelo.Email);
+
+
             AltaUsuario.Ejecutar(nuevoUsuario, modelo.Contrasenia);
 
             mensaje = "Usuario registrado con éxito. Redirigiendo...";
