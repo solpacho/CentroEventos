@@ -15,6 +15,8 @@ builder.Services.AddScoped<IHashService, HashService>();
 builder.Services.AddScoped<ValidadorUsuario>();
 builder.Services.AddScoped<IServicioAutorizacion, ServicioAutorizacionProvisorio>();
 builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuarioSQL>();
+builder.Services.AddScoped<IRepositorioPersona, RepositorioPersonaSQL>(); // faltaba agregar
+builder.Services.AddScoped<IRepositorioEvento,  RepositorioEventosSQL>(); // faltaba agregar
 builder.Services.AddScoped<IniciarSesionUseCase>();
 builder.Services.AddScoped<SesionUsuario>();
 
