@@ -36,6 +36,10 @@ builder.Services.AddScoped<PersonaAltaUseCase>();
 builder.Services.AddScoped<ReservaAltaUseCase>();
 builder.Services.AddScoped<ReservaBajaUseCase>();
 builder.Services.AddScoped<ReservaModificacionUseCase>();
+//casos de uso Eventos
+builder.Services.AddScoped<EventoDeportivoAltaUseCase>();
+builder.Services.AddScoped<EventoDeportivoBajaUseCase>();
+builder.Services.AddScoped<EventoDeportivoModificacionUseCase>();
 // UseCase para listar responsables
 builder.Services.AddScoped<ListarAsistenciaAEventoUseCase>();
 builder.Services.AddScoped<ListarEventosConCupoDisponibleUseCase>();
