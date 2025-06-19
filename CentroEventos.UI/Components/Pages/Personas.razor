@@ -1,9 +1,48 @@
 @page "/Personas"
+@using CentroEventos.UI;
 @inject ListarResponsablesUseCase ResponsablesUseCase
 @inject ListarPersonaUseCase PersonasUseCase
+@inject PersonaAltaUseCase AltaPersonaUseCase
+@inject SesionUsuario Sesion
+@inject IServicioAutorizacion ServicioAutorizacion
 @rendermode InteractiveServer
 
 <h3> Personas: </h3>
+<button class="btn btn-success mb-3" @onclick="() => mostrarForm = true">Agregar Persona</button>
+
+@if (mostrarForm)
+{
+    <EditForm Model="@nuevaPersona" OnValidSubmit="CrearPersona">
+        <DataAnnotationsValidator />
+        @if (!string.IsNullOrWhiteSpace(mensajeError))
+        {
+            <div class="alert alert-danger">@mensajeError</div>
+        }
+        <div class="mb-2">
+            <label>DNI:</label>
+            <InputText @bind-Value="nuevaPersona.DNI" class="form-control" />
+        </div>
+        <div class="mb-2">
+            <label>Nombre:</label>
+            <InputText @bind-Value="nuevaPersona.Nombre" class="form-control" />
+        </div>
+        <div class="mb-2">
+            <label>Apellido:</label>
+            <InputText @bind-Value="nuevaPersona.Apellido" class="form-control" />
+        </div>
+        <div class="mb-2">
+            <label>Email:</label>
+            <InputText @bind-Value="nuevaPersona.Email" class="form-control" />
+        </div>
+        <div class="mb-2">
+            <label>Teléfono:</label>
+            <InputText @bind-Value="nuevaPersona.Telefono" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-secondary ms-2" @onclick="CancelarForm">Cancelar</button>
+    </EditForm>
+}
+
 @if (personas is null){
     <p>Cargando personas</p>
 }
@@ -15,13 +54,15 @@ else
 {
     @foreach (var p in personas)
     {
-        <div class="card mb-3 p-3 border">
-            <p><strong>ID:</strong> @p.Id</p>
-            <p><strong>Nombre y apellido:</strong> @p.Nombre @p.Apellido</p>
-            <p><strong>DNI:</strong> @p.DNI</p>
-            <p><strong>Email:</strong> @p.Email</p>
-            <p><strong>Teléfono:</strong> @p.Telefono</p>
-        </div>
+    <div class="card mb-2 p-2 border">
+        <span>
+            <strong>ID:</strong> @p.Id |
+            <strong>Nombre y apellido:</strong> @p.Nombre @p.Apellido |
+            <strong>DNI:</strong> @p.DNI |
+            <strong>Email:</strong> @p.Email |
+            <strong>Teléfono:</strong> @p.Telefono
+        </span>
+    </div>
     }
 }
 <h3>Personas responsables de eventos</h3>
@@ -52,12 +93,67 @@ else
     private List<Persona>? personas;
     private List<Persona>? responsables;
 
+    private bool mostrarForm = false;
+    private PersonaAltaModel nuevaPersona = new();
+    private string mensajeError = "";
+
     protected override void OnInitialized()
     {
-        // Carga las personas completas
         personas    = PersonasUseCase.Ejecutar();
-
-        // Carga sólo los responsables de eventos
         responsables = ResponsablesUseCase.Ejecutar();
+    }
+
+    private void CancelarForm()
+    {
+        mostrarForm = false;
+        mensajeError = "";
+        nuevaPersona = new();
+    }
+
+    private void CrearPersona()
+    {
+        mensajeError = "";
+        try
+        {
+            var usuario = Sesion.Usuario;
+            if (usuario is null)
+            {
+                mensajeError = "Debe iniciar sesión para agregar personas.";
+                return;
+            }
+
+            var persona = new Persona(
+                nuevaPersona.DNI,
+                nuevaPersona.Nombre,
+                nuevaPersona.Apellido,
+                nuevaPersona.Email,
+                nuevaPersona.Telefono
+            );
+
+            AltaPersonaUseCase.Ejecutar(persona, usuario.Id);
+
+            // Refresca la lista de personas
+            personas    = PersonasUseCase.Ejecutar();
+            responsables = ResponsablesUseCase.Ejecutar();
+
+            mostrarForm = false;
+            nuevaPersona = new();
+        }
+        catch (FalloAutorizacionException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        catch (ValidacionException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        catch (DuplicadoException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            mensajeError = "Error inesperado: " + ex.Message;
+        }
     }
 }
