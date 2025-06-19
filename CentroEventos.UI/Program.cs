@@ -20,7 +20,7 @@ builder.Services.AddScoped<IRepositorioEvento,  RepositorioEventosSQL>(); // fal
 builder.Services.AddScoped<IniciarSesionUseCase>();
 builder.Services.AddScoped<SesionUsuario>();
 // UseCase para listar responsables
-builder.Services.AddScoped<ListarResponsablesUseCase>()
+builder.Services.AddScoped<ListarResponsablesUseCase>();
 
 var app = builder.Build();
 RepositorioSqlite.Inicializar();
