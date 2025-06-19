@@ -8,7 +8,7 @@ public class RegistroUsuarioModel
     [Required(ErrorMessage = "El apellido no puede estar vacío.")]
     public string? Apellido { get; set; }
 
-    [Required(ErrorMessage = "Ingrese su mail.")]
+    [Required(ErrorMessage = "El mail no puede estar vacío.")]
     [EmailAddress(ErrorMessage = "El mail no es válido.")]
     public string? Email { get; set; }
 
