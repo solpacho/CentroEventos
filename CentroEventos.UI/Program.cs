@@ -20,6 +20,7 @@ builder.Services.AddScoped<IRepositorioEvento,  RepositorioEventosSQL>(); // fal
 builder.Services.AddScoped<IRepositorioReserva,  RepositorioReservaSQL>();
 builder.Services.AddScoped<IniciarSesionUseCase>();
 builder.Services.AddScoped<DarPermisoUseCase>();
+builder.Services.AddScoped<UsuarioModificacionUseCase>();
 builder.Services.AddScoped<SesionUsuario>();
 // UseCase para listar responsables
 builder.Services.AddScoped<ListarResponsablesUseCase>();
