@@ -1,0 +1,86 @@
+@page "/mis-datos"
+@inject ObtenerUsuarioActualUseCase ObtenerUsuarioActual ////preguntar 
+@inject UsuarioModificacionUseCase ModificarUsuario
+
+<h3>Mis Datos</h3>
+
+@if (usuario is null)
+{
+    <p>Cargando tus datos...</p>
+}
+else if (!modoEdicion)
+{
+    <div class="card p-3">
+        <p><strong>Nombre:</strong> @usuario.Nombre</p>
+        <p><strong>Apellido:</strong> @usuario.Apellido</p>
+        <p><strong>Email:</strong> @usuario.Email</p>
+
+        <button class="btn btn-primary mt-3" @onclick="() => modoEdicion = true">Modificar Datos</button>
+    </div>
+}
+else
+{
+    <EditForm Model="@usuarioEditado" OnValidSubmit="GuardarCambios">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <InputText class="form-control" @bind-Value="usuarioEditado.Nombre" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Apellido</label>
+            <InputText class="form-control" @bind-Value="usuarioEditado.Apellido" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <InputText class="form-control" @bind-Value="usuarioEditado.Email" />
+        </div>
+
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <button type="button" class="btn btn-secondary ms-2" @onclick="CancelarEdicion">Cancelar</button>
+    </EditForm>
+}
+
+@code {
+    private Usuario? usuario;
+    private Usuario? usuarioEditado;
+
+    private bool modoEdicion = false;
+
+    protected override void OnInitialized()
+    {
+        usuario = ObtenerUsuarioActual.Ejecutar(); // debe devolver el usuario autenticado
+
+        if (usuario is not null)
+        {
+            usuarioEditado = new Usuario
+            {
+                Id = usuario.Id,
+                Nombre = usuario.Nombre,
+                Apellido = usuario.Apellido,
+                Email = usuario.Email,
+                PasswordHash = usuario.PasswordHash,
+                Permisos = new List<Permiso>(usuario.Permisos)
+            };
+        }
+    }
+
+    private void CancelarEdicion()
+    {
+        modoEdicion = false;
+    }
+
+    private void GuardarCambios()
+    {
+        if (usuario is not null && usuarioEditado is not null)
+        {
+            ModificarUsuario.Ejecutar(usuario.Id, usuario.Id, usuarioEditado);
+            usuario = usuarioEditado;
+            modoEdicion = false;
+        }
+    }
+
+}
