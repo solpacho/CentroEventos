@@ -6,7 +6,7 @@ public class PersonaBajaUseCase(IRepositorioPersona repositorioP, IServicioAutor
 {
     public void Ejecutar(int idPersona, int idUsuario)
     {
-        if (!autorizacion.PoseeElPermiso(idUsuario, Permiso.UsuarioBaja)) {
+        if (!autorizacion.PoseeElPermiso(idUsuario, Permiso.PersonaBaja)) {
             throw new FalloAutorizacionException("No posee permisos para realizar esta acción. \n");
         }
 
