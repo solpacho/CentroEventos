@@ -5,12 +5,12 @@ namespace CentroEventos.Aplicacion;
 public class EventoDeportivo
 {
     public int Id { get; set; }
-    public string? Nombre { get; set; }
+    public string Nombre { get; set; } = string.Empty;
     public int CupoMaximo { get; set; }
     public int ResponsableId { get; set; }
     public DateTime FechaHoraInicio { get; set; }
     public double DuracionHoras { get; set; }
-    public string? Descripcion { get; set; }
+    public string Descripcion { get; set; } = string.Empty;
 
     public EventoDeportivo() { }
 
