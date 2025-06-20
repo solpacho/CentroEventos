@@ -24,6 +24,7 @@ builder.Services.AddScoped<ValidadorReserva>();
 builder.Services.AddScoped<UsuarioAltaUseCase>();
 builder.Services.AddScoped<SesionUsuario>();
 builder.Services.AddScoped<UsuarioModificacionUseCase>();
+builder.Services.AddScoped<UsuarioBajaUseCase>();
 builder.Services.AddScoped<HashHelperUseCase>();
 builder.Services.AddScoped<IHashService, HashService>();
 builder.Services.AddScoped<IniciarSesionUseCase>();
