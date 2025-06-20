@@ -71,52 +71,64 @@ else
     private Permiso[] permisosFiltrados = [];
 
     protected override void OnInitialized()
+{
+    var usr = Sesion.Usuario;
+    if (usr != null)
     {
-        if (Sesion.Usuario is not null)
-        {
-            Autorizado = TienePermisos();
-            usuarios = RepoUsuario.ListarUsuarios();
-        }
+        Autorizado = TienePermisos();
+        usuarios = RepoUsuario.ListarUsuarios();
     }
-    private void OtorgarPermisos()
+}
+private void OnUsuarioSeleccionado(ChangeEventArgs e){
+    if (int.TryParse(e.Value?.ToString(), out int id))
     {
-        try
+        modelo.IdReceptor = id;
+        var usuario = usuarios.FirstOrDefault(u => u.Id == id);
+        if (usuario != null)
         {
-            foreach (var permiso in permisosSeleccionados.Where(p => p.Value).Select(p => p.Key))
-            {
-                DarPermiso.Ejecutar(Sesion.Usuario.Id, usuarioSeleccionadoId, permiso);
-            }
-
-            mensaje = "Permisos otorgados correctamente.";
-        }
-        catch (Exception ex)
-        {
-            mensaje = $"Error al otorgar permisos: {ex.Message}";
-        }
-    }
-    private void OnUsuarioSeleccionado(ChangeEventArgs e){
-        if (int.TryParse(e.Value?.ToString(), out int id))
-        {
-            modelo.IdReceptor = id;
-            var usuario = usuarios.FirstOrDefault(u => u.Id == id);
-            if (usuario != null)
-            {
             permisosFiltrados = permisosDisponibles
                 .Where(p => !usuario.Permisos.Contains(p))
                 .ToArray();
-            }
         }
     }
-    private bool TienePermisos()
-    {
-        var permisosAutorizados = new[] {
-            Permiso.UsuarioAlta,
-            Permiso.UsuarioModificacion,
-            Permiso.UsuarioBaja,
-        };
+}
 
-        return Sesion.Usuario.Permisos.Intersect(permisosAutorizados).Any();
+private void OtorgarPermisos()
+{
+    var usr = Sesion.Usuario;
+    if (usr == null)
+    {
+        mensaje = "Sesión no válida. Por favor, inicie sesión.";
+        return;
     }
+
+    try
+    {
+        foreach (var permiso in permisosSeleccionados.Where(p => p.Value).Select(p => p.Key))
+        {
+            DarPermiso.Ejecutar(usr.Id, usuarioSeleccionadoId, permiso);
+        }
+        mensaje = "Permisos otorgados correctamente.";
+    }
+    catch (Exception ex)
+    {
+        mensaje = $"Error al otorgar permisos: {ex.Message}";
+    }
+}
+
+private bool TienePermisos()
+{
+    var usr = Sesion.Usuario;
+    if (usr == null) return false;
+
+    var permisosAutorizados = new[] {
+        Permiso.UsuarioAlta,
+        Permiso.UsuarioModificacion,
+        Permiso.UsuarioBaja,
+    };
+
+    return usr.Permisos.Intersect(permisosAutorizados).Any();
+}
 
 }
 
