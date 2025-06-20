@@ -16,14 +16,15 @@ public class DarPermisoUseCase(IServicioAutorizacion _servicioAutorizacion)
             Permiso.ReservaModificacion,
             Permiso.PersonaAlta,
             Permiso.PersonaBaja,
-            Permiso.PersonaModificacion
+            Permiso.PersonaModificacion,
+            Permiso.DarPermiso
         };
 
         if (!permisosPermitidos.Contains(permiso))
             throw new Exception("No está permitido otorgar este permiso.");
 
         // Si el emisor no es el administrador (id = 1), se debe verificar que tenga permiso explícito
-        if (idEmisor != 1 && !_servicioAutorizacion.PoseeElPermiso(idEmisor, Permiso.UsuarioModificacion))
+        if (idEmisor != 1 && !_servicioAutorizacion.PoseeElPermiso(idEmisor, Permiso.DarPermiso))
         {
             throw new Exception("No tiene permiso para otorgar permisos.");
         }
