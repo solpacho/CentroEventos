@@ -69,7 +69,6 @@ public class RepositorioEventosSQL : IRepositorioEvento
                 eventoExistente.DuracionHoras = evento.DuracionHoras;
                 eventoExistente.FechaHoraInicio = evento.FechaHoraInicio;
                 eventoExistente.ResponsableId = evento.ResponsableId;
-                // id no lo modifico ??
                 _context.SaveChanges();
             }
         }
