@@ -2,7 +2,7 @@
 
 namespace CentroEventos.Aplicacion;
 
-public class ReservaModificacionUseCase(IRepositorioReserva repositorio, IServicioAutorizacion autorizacion)
+public class ReservaModificacionUseCase(IRepositorioReserva repositorioReserva, IRepositorioEvento repositorioEvento, IServicioAutorizacion autorizacion)
 {
     public void Ejecutar(Reserva reserva, int idUsuario)
     {
@@ -10,10 +10,25 @@ public class ReservaModificacionUseCase(IRepositorioReserva repositorio, IServic
             throw new FalloAutorizacionException("No posee permisos para realizar esta acción. \n");
         }
 
-        if (!repositorio.ExisteReserva(reserva.Id)){
+        if (!repositorioReserva.ExisteReserva(reserva.Id)){
             throw new EntidadNotFoundException("No se ha encontrado la reserva \n");
         }
+
+        
+        if (!repositorioEvento.ExisteEvento(reserva.EventoDeportivoId)){
+            throw new EntidadNotFoundException("No se ha encontrado el evento deportivo \n");
+        }
+
+        
+        var reservaOriginal = repositorioReserva.ObtenerPorId(reserva.Id);
+        if (reservaOriginal == null){
+            throw new EntidadNotFoundException("No se ha encontrado la reserva \n");
+        }
+
+        
+        reserva.PersonaId = reservaOriginal.PersonaId; 
+        reserva.FechaAltaReserva = reservaOriginal.FechaAltaReserva; 
  
-        repositorio.Modificar(reserva);
+        repositorioReserva.Modificar(reserva);
     }
 }
