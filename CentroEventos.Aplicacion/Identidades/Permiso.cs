@@ -11,5 +11,6 @@ public enum Permiso{
     UsuarioBaja,
     PersonaAlta,
     PersonaBaja,
-    PersonaModificacion
+    PersonaModificacion,
+    DarPermiso
 }
