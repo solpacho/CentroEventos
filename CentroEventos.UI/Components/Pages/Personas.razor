@@ -10,9 +10,13 @@
 @rendermode InteractiveServer
 
 <h3> Personas: </h3>
-<button class="btn btn-success mb-3" @onclick="() => mostrarForm = true">Agregar Persona</button>
 
-@if (mostrarForm)
+@if (tienePermisoAlta)
+{
+    <button class="btn btn-success mb-3" @onclick="() => mostrarForm = true">Agregar Persona</button>
+}
+
+@if (mostrarForm && tienePermisoAlta)
 {
     <EditForm Model="@nuevaPersona" OnValidSubmit="CrearPersona">
         <DataAnnotationsValidator />
@@ -155,6 +159,7 @@ else
     private string mensajeError = "";
     private string mensajeErrorModificacion = "";
 
+    private bool tienePermisoAlta = false;
     private bool tienePermisoModificacion = false;
     private bool tienePermisoBaja = false;
 
@@ -167,6 +172,7 @@ else
         var usuario = Sesion.Usuario;
         if (usuario is not null)
         {
+            tienePermisoAlta = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.PersonaAlta);
             tienePermisoModificacion = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.PersonaModificacion);
             tienePermisoBaja = ServicioAutorizacion.PoseeElPermiso(usuario.Id, Permiso.PersonaBaja);
         }
@@ -202,6 +208,11 @@ else
             if (usuario is null)
             {
                 mensajeError = "Debe iniciar sesión para agregar personas.";
+                return;
+            }
+            if (!tienePermisoAlta)
+            {
+                mensajeError = "No tiene permiso para agregar personas.";
                 return;
             }
 
