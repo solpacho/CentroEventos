@@ -13,29 +13,25 @@
 else
 {
     <ul class="nav nav-tabs">
-    <li class="nav-item">
-        <NavLink class="nav-link" href="/MisDatos">Datos personales</NavLink>
-    </li>
-    <li class="nav-item">
-        <NavLink class="nav-link" href="/Reservas">Reservas</NavLink>
-    </li>
-    <li class="nav-item">
-        <NavLink class="nav-link" href="/Personas">Personas</NavLink>
-    </li>
-    <li class="nav-item">
-        <NavLink class="nav-link" href="/Eventos">Eventos</NavLink>
-    </li>
-    @if (Sesion.Usuario.Id == 1)
+        <li class="nav-item">
+            <NavLink class="nav-link" href="/MisDatos">Datos personales</NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link" href="/Reservas">Reservas</NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link" href="/Personas">Personas</NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link" href="/Eventos">Eventos</NavLink>
+        </li>
+        @if (PuedeVerGestion())
         {
             <li class="nav-item">
                 <NavLink class="nav-link" href="/Gestion">Gestion</NavLink>
             </li>
-            <li class="nav-item">
-                <NavLink class="nav-link" href="/Usuarios">Usuarios</NavLink>
-            </li>
         }
-</ul>
-
+    </ul>
 }
 
 <button class="btn btn-danger mt-3" @onclick="CerrarSesion">Cerrar sesión</button>
@@ -55,5 +51,20 @@ else
     {
         Sesion.CerrarSesion();
         Navigation.NavigateTo("/Login");
+    }
+
+    private bool PuedeVerGestion()
+    {
+        if (Sesion.Usuario is null)
+            return false;
+
+        // Siempre muestra para el admin (Id == 1)
+        if (Sesion.Usuario.Id == 1)
+            return true;
+
+        // Si tiene alguno de estos permisos, también muestra el menú
+        return Sesion.Usuario.Permisos.Contains(Permiso.UsuarioBaja) ||
+               Sesion.Usuario.Permisos.Contains(Permiso.UsuarioModificacion) ||
+               Sesion.Usuario.Permisos.Contains(Permiso.DarPermiso);
     }
 }
