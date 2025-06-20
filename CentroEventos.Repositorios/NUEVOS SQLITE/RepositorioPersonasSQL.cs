@@ -43,7 +43,7 @@ public class RepositorioPersonaSQL: IRepositorioPersona
         }
     }
 
-    public void Modificar (Persona persona){ //este metodo:
+    public void Modificar (Persona persona){
         using (var _context = new RepositorioContext()){
         var perExistente = _context.Personas.Find(persona.Id);
         if (perExistente != null)
