@@ -1,6 +1,8 @@
 @page "/reservas"
 @inject ListarReservasUseCase ObtenerReservasUseCase
 @inject ReservaAltaUseCase AltaReservaUseCase
+@inject ReservaModificacionUseCase ModificacionReservaUseCase
+@inject ReservaBajaUseCase BajaReservaUseCase
 @inject SesionUsuario Sesion
 @inject IServicioAutorizacion ServicioAutorizacion
 @rendermode InteractiveServer
@@ -40,20 +42,43 @@ else
                 <label>ID Evento:</label>
                 <InputNumber @bind-Value="nuevaReserva.EventoDeportivoId" class="form-control" />
             </div>
-            <!-- Si quieres permitir elegir estado, descomenta esto:
-            <div class="mb-2">
-                <label>Estado:</label>
-                <InputSelect @bind-Value="nuevaReserva.Estado" class="form-control">
-                    @foreach (var estado in Enum.GetValues(typeof(EstadoAsistencia)))
-                    {
-                        <option value="@((int)estado)">@estado</option>
-                    }
-                </InputSelect>
-            </div>
-            -->
             <button type="submit" class="btn btn-primary">Guardar</button>
             <button type="button" class="btn btn-secondary ms-2" @onclick="CancelarFormReserva">Cancelar</button>
         </EditForm>
+    }
+
+    @if (mostrarFormModificacion)
+    {
+        <div class="card mb-3 p-3 border border-primary">
+            <h5>Modificar Reserva</h5>
+            <EditForm Model="@reservaModificacion" OnValidSubmit="ModificarReserva">
+                <DataAnnotationsValidator />
+                @if (!string.IsNullOrWhiteSpace(mensajeErrorModificacion))
+                {
+                    <div class="alert alert-danger">
+                        @mensajeErrorModificacion
+                    </div>
+                }
+                <div class="mb-2">
+                    <label>ID Persona (no modificable):</label>
+                    <input type="number" value="@reservaModificacion.PersonaId" class="form-control" disabled />
+                </div>
+                <div class="mb-2">
+                    <label>ID Evento:</label>
+                    <InputNumber @bind-Value="reservaModificacion.EventoDeportivoId" class="form-control" />
+                </div>
+                <div class="mb-2">
+                    <label>Estado:</label>
+                    <InputSelect @bind-Value="reservaModificacion.Estado" class="form-control">
+                        <option value="@EstadoAsistencia.Pendiente">Pendiente</option>
+                        <option value="@EstadoAsistencia.Presente">Presente</option>
+                        <option value="@EstadoAsistencia.Ausente">Ausente</option>
+                    </InputSelect>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <button type="button" class="btn btn-secondary ms-2" @onclick="CancelarModificacion">Cancelar</button>
+            </EditForm>
+        </div>
     }
 
     @foreach (var reserva in reservas)
@@ -66,11 +91,11 @@ else
 
             @if (tienePermisoReservaModificacion)
             {
-                <button class="btn btn-primary me-2">Modificar</button>
+                <button class="btn btn-primary me-2" @onclick="() => IniciarModificacion(reserva)">Modificar</button>
             }
             @if (tienePermisoReservaBaja)
             {
-                <button class="btn btn-danger">Eliminar</button>
+                <button class="btn btn-danger" @onclick="() => EliminarReserva(reserva.Id)">Eliminar</button>
             }
         </div>
     }
@@ -85,9 +110,12 @@ else
     private bool tienePermisoReservaModificacion;
 
     private bool mostrarFormReserva = false;
+    private bool mostrarFormModificacion = false;
     private string mensajeError = "";
+    private string mensajeErrorModificacion = "";
 
     private ReservaAltaModel nuevaReserva = new();
+    private ReservaModificacionModel reservaModificacion = new();
 
     protected override void OnInitialized()
     {
@@ -124,7 +152,7 @@ else
                 PersonaId = nuevaReserva.PersonaId,
                 EventoDeportivoId = nuevaReserva.EventoDeportivoId,
                 FechaAltaReserva = DateTime.Now,
-                Estado = nuevaReserva.Estado // o EstadoAsistencia.Pendiente si no expones el campo en el form
+                Estado = nuevaReserva.Estado
             };
 
             AltaReservaUseCase.Ejecutar(reserva, usuario!.Id);
@@ -146,6 +174,85 @@ else
             mensajeError = ex.Message;
         }
         catch (CupoExcedidoException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            mensajeError = "Error inesperado: " + ex.Message;
+        }
+    }
+
+    private void IniciarModificacion(Reserva reserva)
+    {
+        mostrarFormModificacion = true;
+        mostrarFormReserva = false; // Ocultar form de nueva reserva si está abierto
+        mensajeErrorModificacion = "";
+        
+        // Cargar los datos actuales de la reserva en el modelo de modificación
+        reservaModificacion = new ReservaModificacionModel
+        {
+            Id = reserva.Id,
+            PersonaId = reserva.PersonaId,
+            EventoDeportivoId = reserva.EventoDeportivoId,
+            FechaAltaReserva = reserva.FechaAltaReserva,
+            Estado = reserva.Estado
+        };
+    }
+
+    private void CancelarModificacion()
+    {
+        mostrarFormModificacion = false;
+        mensajeErrorModificacion = "";
+        reservaModificacion = new();
+    }
+
+    private void ModificarReserva()
+    {
+        mensajeErrorModificacion = "";
+        try
+        {
+            var reserva = new Reserva
+            {
+                Id = reservaModificacion.Id,
+                PersonaId = reservaModificacion.PersonaId,
+                EventoDeportivoId = reservaModificacion.EventoDeportivoId,
+                FechaAltaReserva = reservaModificacion.FechaAltaReserva,
+                Estado = reservaModificacion.Estado
+            };
+
+            ModificacionReservaUseCase.Ejecutar(reserva, usuario!.Id);
+
+            mostrarFormModificacion = false;
+            reservaModificacion = new();
+            CargarReservasYPermisos(); // Recargar la lista
+        }
+        catch (FalloAutorizacionException ex)
+        {
+            mensajeErrorModificacion = ex.Message;
+        }
+        catch (EntidadNotFoundException ex)
+        {
+            mensajeErrorModificacion = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            mensajeErrorModificacion = "Error inesperado: " + ex.Message;
+        }
+    }
+
+    private void EliminarReserva(int idReserva)
+    {
+        try
+        {
+            BajaReservaUseCase.Ejecutar(idReserva, usuario!.Id);
+            CargarReservasYPermisos(); // Recargar la lista después de eliminar
+        }
+        catch (FalloAutorizacionException ex)
+        {
+            mensajeError = ex.Message;
+        }
+        catch (EntidadNotFoundException ex)
         {
             mensajeError = ex.Message;
         }
