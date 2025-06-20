@@ -51,7 +51,7 @@ public class RepositorioUsuarioSQL : IRepositorioUsuario
 
     }
 
-    public void ModificarUsuario(int id, Usuario u) // CHEQUEAR SI ESTÁ BIEN
+    public void ModificarUsuario(int id, Usuario u)
     {
          using (var _context = new RepositorioContext())
         {
